@@ -61,14 +61,23 @@ class Script
      * Set the value of a variable
      * @param string $variable
      * @param Script|string $expression
+     * @param bool $same_line
      * @return self
      */
-    public function set(string $variable, Script|string $expression) : self
+    public function set(string $variable, Script|string $expression, bool $same_line = false) : self
     {
         if(is_string($expression) && !is_numeric($expression)) {
             $expression = static::doubleQuote($expression);
         } elseif($expression instanceof Script) {
             $expression = static::backtick($expression);
+        }
+
+        if($same_line) {
+            return $this->put(sprintf(
+                '%s=%s',
+                $variable,
+                $expression
+            ));
         }
 
         return $this->line(sprintf(
