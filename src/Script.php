@@ -342,6 +342,30 @@ class Script
     }
 
     /**
+     * @param string $ownership
+     * @param string|array $file
+     * @param bool $recursive
+     * @return $this
+     */
+    public function chown(string $ownership, string|array $file, bool $recursive = false) : self
+    {
+
+        if(empty($file)) {
+            throw new RuntimeException('File cannot be empty');
+        }
+
+        if(is_array($file)) {
+            $file = implode(' ', $file);
+        }
+
+        if($recursive) {
+            $ownership = sprintf('-R %s', $ownership);
+        }
+
+        return $this->line(sprintf('chown %s %s', $ownership, $file));
+    }
+
+    /**
      * Generates the resulting shell script
      * @return string
      */
