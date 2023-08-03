@@ -16,6 +16,8 @@ class Script
      */
     protected int $nested = 0;
 
+    protected bool $newline = true;
+
     /**
      * @param string $path
      * @param array $arguments
@@ -35,7 +37,6 @@ class Script
 
     }
 
-
     /**
      * Add a new command line
      * @param string|static $expression
@@ -45,7 +46,15 @@ class Script
     {
         $expression = (string) $expression;
 
-        return $this->addFragment($expression);
+        return $this->addFragment($expression, true);
+    }
+
+    public function put(Script|string $expression) : self
+    {
+        $expression = (string) $expression;
+
+        $this->newline = false;
+        return $this->addFragment($expression, false);
     }
 
     /**
@@ -61,6 +70,13 @@ class Script
             $variable,
             is_numeric($expression) ? $expression : static::doubleQuote($expression)
         ));
+    }
+
+    /**
+     * @return $this
+     */
+    public function pipe(): self {
+        return $this->put('|');
     }
 
     /**
@@ -294,12 +310,18 @@ class Script
     /**
      * Add a new shell fragment
      * @param string $line
+     * @param bool $newline
      * @return self
      */
-    protected function addFragment(string $line) : self
+    protected function addFragment(string $line, bool $newline) : self
     {
-        $this->fragments[] = $line;
+        if($this->newline) {
+            $this->fragments[] = $line;
+        } else {
+            $this->fragments[count($this->fragments) - 1] .= " " . $line;
+        }
 
+        $this->newline = $newline;
         return $this;
     }
 
