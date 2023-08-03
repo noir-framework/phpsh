@@ -396,6 +396,19 @@ class Script
     }
 
     /**
+     * @param string $directory
+     * @return $this
+     */
+    public function chdir(string $directory) : self
+    {
+        if(empty($directory)) {
+            throw new RuntimeException('Directory cannot be empty');
+        }
+
+        return $this->line(sprintf('cd %s', $directory));
+    }
+
+    /**
      * @param string|array $path
      * @param bool $recursive
      * @param bool $force
