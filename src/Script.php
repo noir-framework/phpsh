@@ -60,15 +60,21 @@ class Script
     /**
      * Set the value of a variable
      * @param string $variable
-     * @param string $expression
+     * @param Script|string $expression
      * @return self
      */
-    public function set(string $variable, string $expression) : self
+    public function set(string $variable, Script|string $expression) : self
     {
+        if(is_string($expression) && !is_numeric($expression)) {
+            $expression = static::doubleQuote($expression);
+        } elseif($expression instanceof Script) {
+            $expression = static::backtick($expression);
+        }
+
         return $this->line(sprintf(
             '%s=%s',
             $variable,
-            is_numeric($expression) ? $expression : static::doubleQuote($expression)
+            $expression
         ));
     }
 
@@ -87,6 +93,13 @@ class Script
     public function redirect(int $fd, string $dst) : self
     {
         return $this->put(sprintf('%s>%s', $fd, $dst));
+    }
+
+    public function execute(Script|string $expression) : self
+    {
+        $expression = (string) $expression;
+
+        return $this->addFragment($expression, true);
     }
 
     /**
@@ -289,6 +302,15 @@ class Script
     public static function doubleQuote(string $expression) : string
     {
         return sprintf('"%s"', $expression);
+    }
+
+    /**
+     * @param Script|string $expression
+     * @return string
+     */
+    public static function backtick(Script|string $expression) : string
+    {
+        return sprintf('`%s`', $expression);
     }
 
     /**
