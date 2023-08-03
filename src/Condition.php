@@ -4,22 +4,18 @@ namespace PhpSh;
 
 class Condition
 {
-    /**
-     * @var string
-     */
-    protected $lastVariable = '';
 
-    /**
-     * @var string[]
-     */
-    protected $fragments = [];
+    protected string $lastVariable = '';
+
+    /** @var string[] */
+    protected array $fragments = [];
 
     /**
      * Initialize a condition
-     * @param string|bool $expression
+     * @param bool|string $expression
      * @return self
      */
-    public static function create($expression = false) : self
+    public static function create(bool|string $expression = false) : self
     {
         $instance = new static();
         if ($expression) {
@@ -163,7 +159,7 @@ class Condition
     }
 
     /**
-     * @param $path
+     * @param string $path
      * @return self
      */
     public function readable(string $path) : self
@@ -175,8 +171,7 @@ class Condition
      * @param string $path
      * @return self
      */
-    public function writable(string $path)
-    {
+    public function writable(string $path): self {
         return $this->checkPath('w', $path);
     }
 
@@ -232,14 +227,14 @@ class Condition
      */
     public function checkPath(string $operator, string $path) : self
     {
-        return $this->addFragment("-{$operator} $path");
+        return $this->addFragment("-$operator $path");
     }
 
     /**
      * Convert the Condition object to shell condition string
      * @return string
      */
-    public function generate()
+    public function generate(): string
     {
         return implode(' ', $this->fragments);
     }
