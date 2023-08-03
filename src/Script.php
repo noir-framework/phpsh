@@ -31,7 +31,7 @@ class Script
         }
 
         return $this->line(implode(' ', [
-            $path,
+            '#!' . $path,
             empty($arguments) ? '' : implode(' ', $arguments)
         ]));
 
