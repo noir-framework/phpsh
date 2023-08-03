@@ -387,6 +387,33 @@ class Script
     }
 
     /**
+     * @param string|array $path
+     * @param bool $recursive
+     * @param bool $force
+     * @return $this
+     */
+    public function rm(string|array $path, bool $recursive = false, bool $force = false): self {
+        if(empty($path)) {
+            throw new RuntimeException('Path cannot be empty');
+        }
+
+        if(is_array($path)) {
+            $path = implode(' ', $path);
+        }
+
+        $options = [];
+        if($recursive) {
+            $options[] = '-r';
+        }
+
+        if($force) {
+            $options[] = '-f';
+        }
+
+        return $this->line(sprintf('rm %s %s', implode(' ', $options), $path));
+    }
+
+    /**
      * Generates the resulting shell script
      * @return string
      */
