@@ -313,9 +313,32 @@ class Script
         return sprintf('`%s`', $expression);
     }
 
+    /**
+     * @param int $seconds
+     * @return $this
+     */
     public function sleep(int $seconds) : self
     {
         return $this->line(sprintf('sleep %d', $seconds));
+    }
+
+    /**
+     * @param string $mode
+     * @param string|array $file
+     * @param bool $recursive
+     * @return $this
+     */
+    public function chmod(string $mode, string|array $file, bool $recursive = false) : self
+    {
+        if(is_array($file)) {
+            $file = implode(' ', $file);
+        }
+
+        if($recursive) {
+            $mode = sprintf('-R %s', $mode);
+        }
+
+        return $this->line(sprintf('chmod %s %s', $mode, $file));
     }
 
     /**
