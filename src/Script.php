@@ -369,6 +369,24 @@ class Script
     }
 
     /**
+     * @param string $directory
+     * @param bool $recursive
+     * @return $this
+     */
+    public function mkdir(string $directory, bool $recursive = false) : self
+    {
+        if(empty($directory)) {
+            throw new RuntimeException('Directory cannot be empty');
+        }
+
+        if($recursive) {
+            $directory = sprintf('-p %s', $directory);
+        }
+
+        return $this->line(sprintf('mkdir %s', $directory));
+    }
+
+    /**
      * Generates the resulting shell script
      * @return string
      */
