@@ -473,6 +473,19 @@ class Script
     }
 
     /**
+     * @param int|array $pid
+     * @param int $signal
+     * @return $this
+     */
+    public function kill(int|array $pid, int $signal = 15): self {
+        if(is_array($pid)) {
+            $pid = implode(' ', $pid);
+        }
+
+        return $this->line(sprintf('kill -%s %s', $signal, $pid));
+    }
+
+    /**
      * Generates the resulting shell script
      * @return string
      */
