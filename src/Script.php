@@ -414,6 +414,20 @@ class Script
     }
 
     /**
+     * @return $this
+     */
+    public function and(): self {
+        return $this->put('&&');
+    }
+
+    /**
+     * @return $this
+     */
+    public function or(): self {
+        return $this->put('||');
+    }
+
+    /**
      * Generates the resulting shell script
      * @return string
      */
