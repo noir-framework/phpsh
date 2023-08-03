@@ -271,6 +271,10 @@ class Script
             $command = escapeshellcmd($command);
         }
 
+        if(empty($command)) {
+            return $this->line(implode(' ', $arguments));
+        }
+
         return $this->line(implode(' ', [
             $command,
             implode(' ', $arguments)
@@ -504,7 +508,13 @@ class Script
         if($this->newline) {
             $this->fragments[] = $line;
         } else {
-            $this->fragments[count($this->fragments) - 1] .= ' ' . $line;
+            $frag_no = count($this->fragments) - 1;
+            if(str_starts_with(';', $line) || str_starts_with('\\', $this->fragments[$frag_no]) || preg_match('/\s+$/', $this->fragments[$frag_no])) {
+                $space = '';
+            } else {
+                $space = ' ';
+            }
+            $this->fragments[$frag_no] .= $space . $line;
         }
 
         $this->newline = $newline;
