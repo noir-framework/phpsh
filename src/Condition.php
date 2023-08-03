@@ -5,8 +5,6 @@ namespace PhpSh;
 class Condition
 {
 
-    protected string $lastVariable = '';
-
     /** @var string[] */
     protected array $fragments = [];
 
