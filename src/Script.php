@@ -212,6 +212,28 @@ class Script
     }
 
     /**
+     * @param string $command
+     * @param array $arguments
+     * @param bool $needs_escape
+     * @return $this
+     */
+    public function command(string $command, array $arguments = [], bool $needs_escape = false) : self
+    {
+        if($needs_escape && !empty($arguments)) {
+            $arguments = array_map('escapeshellarg', $arguments);
+        }
+
+        if($needs_escape) {
+            $command = escapeshellcmd($command);
+        }
+
+        return $this->line(implode(' ', [
+            $command,
+            implode(' ', $arguments)
+        ]));
+    }
+
+    /**
      * Surround an expression with double quotes
      * @param string $expression
      * @return string
