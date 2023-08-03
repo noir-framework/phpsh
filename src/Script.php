@@ -10,12 +10,7 @@ class Script
      * @var string[]
      */
     protected array $fragments = [];
-
-    /**
-     * @var int
-     */
     protected int $nested = 0;
-
     protected bool $newline = true;
 
     /**
@@ -38,46 +33,17 @@ class Script
     }
 
     /**
-     * Add a new command line
-     * @param string|static $expression
-     * @return self
-     */
-    public function line(Script|string $expression) : self
-    {
-        $expression = (string) $expression;
-
-        return $this->addFragment($expression, true);
-    }
-
-    public function put(Script|string $expression) : self
-    {
-        $expression = (string) $expression;
-
-        $this->newline = false;
-        return $this->addFragment($expression, false);
-    }
-
-    /**
      * Set the value of a variable
      * @param string $variable
      * @param Script|string $expression
-     * @param bool $same_line
      * @return self
      */
-    public function set(string $variable, Script|string $expression, bool $same_line = false) : self
+    public function set(string $variable, Script|string $expression) : self
     {
         if(is_string($expression) && !is_numeric($expression)) {
             $expression = static::doubleQuote($expression);
         } elseif($expression instanceof Script) {
             $expression = static::backtick($expression);
-        }
-
-        if($same_line) {
-            return $this->put(sprintf(
-                '%s=%s',
-                $variable,
-                $expression
-            ));
         }
 
         return $this->line(sprintf(
@@ -279,6 +245,14 @@ class Script
             static::doubleQuote($expression),
             $arguments ? static::doubleQuote(implode('" "', $arguments)) : '',
         ]));
+    }
+
+    public function commandWithEnv(string|Script $env, string $command, array $arguments = [], bool $needs_escape = false) : self
+    {
+        $env = (string) $env;
+        $this->line($env);
+        $this->newline = false;
+        return $this->command($command, $arguments, $needs_escape);
     }
 
     /**
@@ -486,6 +460,14 @@ class Script
     }
 
     /**
+     * @return $this
+     */
+    public function nextLine(bool $with_tab = true): self {
+        //XXX it's important to be handled in this way!
+        return $with_tab ? $this->put( "\\\\\n\t") : $this->line("");
+    }
+
+    /**
      * Generates the resulting shell script
      * @return string
      */
@@ -522,7 +504,7 @@ class Script
         if($this->newline) {
             $this->fragments[] = $line;
         } else {
-            $this->fragments[count($this->fragments) - 1] .= " " . $line;
+            $this->fragments[count($this->fragments) - 1] .= ' ' . $line;
         }
 
         $this->newline = $newline;
@@ -542,4 +524,25 @@ class Script
 
         return $script;
     }
+
+    /**
+     * Add a new command line
+     * @param string|static $expression
+     * @return self
+     */
+    protected function line(Script|string $expression) : self
+    {
+        $expression = (string) $expression;
+
+        return $this->addFragment($expression, true);
+    }
+
+    public function put(Script|string $expression) : self
+    {
+        $expression = (string) $expression;
+
+        $this->newline = false;
+        return $this->addFragment($expression, false);
+    }
+
 }
