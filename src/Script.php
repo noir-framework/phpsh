@@ -313,6 +313,11 @@ class Script
         return sprintf('`%s`', $expression);
     }
 
+    public function sleep(int $seconds) : self
+    {
+        return $this->line(sprintf('sleep %d', $seconds));
+    }
+
     /**
      * Generates the resulting shell script
      * @return string
