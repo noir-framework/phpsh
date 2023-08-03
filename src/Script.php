@@ -2,6 +2,8 @@
 
 namespace PhpSh;
 
+use RuntimeException;
+
 class Script
 {
     /**
@@ -13,6 +15,26 @@ class Script
      * @var int
      */
     protected int $nested = 0;
+
+    /**
+     * @param string $path
+     * @param array $arguments
+     * @return $this
+     */
+    public function shebang(string $path = '/bin/sh', array $arguments = []) : self
+    {
+
+        if(!empty($this->fragments)) {
+            throw new RuntimeException('Shebang must be called before everything else');
+        }
+
+        return $this->line(implode(' ', [
+            $path,
+            empty($arguments) ? '' : implode(' ', $arguments)
+        ]));
+
+    }
+
 
     /**
      * Add a new command line
