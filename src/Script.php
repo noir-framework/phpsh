@@ -80,6 +80,16 @@ class Script
     }
 
     /**
+     * @param int $fd
+     * @param string $dst
+     * @return $this
+     */
+    public function redirect(int $fd, string $dst) : self
+    {
+        return $this->put(sprintf('%s>%s', $fd, $dst));
+    }
+
+    /**
      * Construct an if condition
      * @param string|Condition $condition
      * @param callable $callable A callable that receives a new Script instance as argument
