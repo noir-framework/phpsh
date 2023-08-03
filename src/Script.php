@@ -7,19 +7,19 @@ class Script
     /**
      * @var string[]
      */
-    protected $fragments = [];
+    protected array $fragments = [];
 
     /**
      * @var int
      */
-    protected $nested = 0;
+    protected int $nested = 0;
 
     /**
      * Add a new command line
      * @param string|static $expression
      * @return self
      */
-    public function line($expression) : self
+    public function line(Script|string $expression) : self
     {
         $expression = (string) $expression;
 
@@ -49,7 +49,7 @@ class Script
      * @param string $tag
      * @return self
      */
-    public function if($condition, callable $callable, bool $double = false, string $tag = 'if') : self
+    public function if(Condition|string $condition, callable $callable, bool $double = false, string $tag = 'if') : self
     {
         $script = $this->newNestedScript($callable);
 
@@ -84,7 +84,7 @@ class Script
      * @param bool $double
      * @return self
      */
-    public function elseif($condition, callable $callable, bool $double = true) : self
+    public function elseif(Condition|string $condition, callable $callable, bool $double = true) : self
     {
         return $this->if($condition, $callable, $double, 'elif');
     }
@@ -137,10 +137,10 @@ class Script
      * @param callable $callable
      * @return self
      */
-    public function while($condition, callable $callable) : self
+    public function while(Condition|string $condition, callable $callable) : self
     {
         return $this
-            ->line(sprintf('while [ %s ]; do', (string) $condition))
+            ->line(sprintf('while [ %s ]; do', $condition))
             ->line($this->newNestedScript($callable))
             ->line('done');
     }
@@ -164,8 +164,8 @@ class Script
     }
 
     /**
-     * @param $variable
-     * @param $count
+     * @param string $variable
+     * @param int $count
      * @return self
      */
     public function increment(string $variable, int $count = 1) : self
@@ -174,8 +174,8 @@ class Script
     }
 
     /**
-     * @param $variable
-     * @param $count
+     * @param string $variable
+     * @param int $count
      * @return self
      */
     public function decrement(string $variable, int $count = 1) : self
@@ -199,10 +199,10 @@ class Script
 
     /**
      * @param string $expression
-     * @param array|bool $arguments
+     * @param bool|array $arguments
      * @return self
      */
-    public function printf(string $expression, $arguments = false) : self
+    public function printf(string $expression, bool|array $arguments = false) : self
     {
         return $this->line(implode(' ', [
             'printf',
@@ -225,8 +225,7 @@ class Script
      * Generates the resulting shell script
      * @return string
      */
-    public function generate()
-    {
+    public function generate(): string {
         $result = '';
         $length = count($this->fragments);
         for ($i = 0; $i < $length; $i++) {
