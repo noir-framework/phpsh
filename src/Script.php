@@ -330,7 +330,6 @@ class Script
      */
     public function chmod(string $mode, string|array $file, bool $recursive = false) : self
     {
-
         if(empty($file)) {
             throw new RuntimeException('File cannot be empty');
         }
@@ -354,7 +353,6 @@ class Script
      */
     public function chown(string $ownership, string|array $file, bool $recursive = false) : self
     {
-
         if(empty($file)) {
             throw new RuntimeException('File cannot be empty');
         }
