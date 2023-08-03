@@ -453,6 +453,13 @@ class Script
     }
 
     /**
+     * @return $this
+     */
+    public function semiColon(): self {
+        return $this->put(';');
+    }
+
+    /**
      * Generates the resulting shell script
      * @return string
      */
