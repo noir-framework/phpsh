@@ -428,6 +428,14 @@ class Script
     }
 
     /**
+     * @param int $code
+     * @return $this
+     */
+    public function exit(int $code = 0): self {
+        return $this->line(sprintf('exit %d', $code));
+    }
+
+    /**
      * Generates the resulting shell script
      * @return string
      */
