@@ -170,7 +170,7 @@ class Script
      */
     public function increment(string $variable, int $count = 1) : self
     {
-        return $this->line(sprintf('let %s+=%d', $variable, $count));
+        return $this->line(sprintf('%s=$((%s+%d))', $variable, $variable, $count));
     }
 
     /**
@@ -180,7 +180,7 @@ class Script
      */
     public function decrement(string $variable, int $count = 1) : self
     {
-        return $this->line(sprintf('let %s-=%d', $variable, $count));
+        return $this->line(sprintf('%s=$((%s-%d))', $variable, $variable, $count));
     }
 
     /**
