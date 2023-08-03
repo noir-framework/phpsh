@@ -436,6 +436,14 @@ class Script
     }
 
     /**
+     * @param string $file
+     * @return $this
+     */
+    public function touch(string $file): self {
+        return $this->line(sprintf('touch %s', $file));
+    }
+
+    /**
      * Generates the resulting shell script
      * @return string
      */
