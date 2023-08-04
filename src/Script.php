@@ -324,12 +324,12 @@ class Script
     }
 
     /**
-     * @param string $mode
+     * @param int|string $mode
      * @param string|array $file
      * @param bool $recursive
      * @return $this
      */
-    public function chmod(string $mode, string|array $file, bool $recursive = false) : self
+    public function chmod(int|string $mode, string|array $file, bool $recursive = false) : self
     {
         if(empty($file)) {
             throw new RuntimeException('File cannot be empty');
