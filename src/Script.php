@@ -289,10 +289,10 @@ class Script
             $command = escapeshellcmd($command);
         }
 
-        return $this->line(implode(' ', [
+        return $this->line(trim(implode(' ', [
             $command,
             implode(' ', $arguments)
-        ]));
+        ])));
     }
 
     /**
@@ -478,11 +478,11 @@ class Script
     }
 
     /**
-     * @param string $file
+     * @param string|null $file
      * @return $this
      */
-    public function cat(string $file): self {
-        return $this->line(sprintf('cat %s', $file));
+    public function cat(?string $file = null): self {
+        return $this->line($file === null ? 'cat' : sprintf('cat %s', $file));
     }
 
     /**
