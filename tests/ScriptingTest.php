@@ -430,4 +430,39 @@ class ScriptingTest extends TestCase
 
     }
 
+    /** @test */
+    public function testSleepCommand()
+    {
+
+        $script = (new Script())
+            ->sleep(10)
+            ->generate();
+
+        $this->assertEquals('sleep 10', $script);
+
+        $command = (new Script())
+            ->command('sleep', [10])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        $script = (new Script())
+            ->sleep('10')
+            ->generate();
+
+        $this->assertEquals('sleep 10', $script);
+
+        $command = (new Script())
+            ->command('sleep', ['10'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        $this->expectException(RuntimeException::class);
+        (new Script())
+            ->sleep('test')
+            ->generate();
+
+    }
+
 }

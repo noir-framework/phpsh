@@ -315,11 +315,15 @@ class Script
     }
 
     /**
-     * @param int $seconds
+     * @param int|string $seconds
      * @return $this
      */
-    public function sleep(int $seconds) : self
+    public function sleep(int|string $seconds) : self
     {
+        if(!is_numeric($seconds)) {
+            throw new RuntimeException('Seconds must be an integer');
+        }
+
         return $this->line(sprintf('sleep %d', $seconds));
     }
 
