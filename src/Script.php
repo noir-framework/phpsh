@@ -46,10 +46,10 @@ class Script
      */
     public function set(string $variable, Script|string $expression, bool $with_export = false) : self
     {
-        if(is_string($expression) && !is_numeric($expression)) {
-            $expression = static::doubleQuote($expression);
-        } elseif($expression instanceof Script) {
-            $expression = static::backtick($expression);
+        if($expression instanceof Script) {
+            $expression = static::backtick($expression->generate());
+        } elseif(!str_starts_with($expression, '`') && !is_numeric($expression)) {
+            $expression = static ::doubleQuote($expression);
         }
 
         $export = $with_export ? 'export ' : '';

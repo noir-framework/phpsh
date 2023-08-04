@@ -465,4 +465,34 @@ class ScriptingTest extends TestCase
 
     }
 
+    /** @test */
+    public function testSetAndBackTick()
+    {
+
+        $script = (new Script())
+            ->set('CONFIG', (new Script())->backtick('cat /etc/config'))
+            ->generate();
+
+        $this->assertEquals('CONFIG=`cat /etc/config`', $script);
+
+        $command = (new Script())
+            ->command('CONFIG=`cat /etc/config`')
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        $script = (new Script())
+            ->set('CONFIG', (new Script())->backtick('cat /etc/config'), true)
+            ->generate();
+
+        $this->assertEquals('export CONFIG=`cat /etc/config`', $script);
+
+        $command = (new Script())
+            ->command('export', ['CONFIG=`cat /etc/config`'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+    }
+
 }
