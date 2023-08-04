@@ -134,7 +134,7 @@ class Script
      * @param bool $double
      * @return self
      */
-    public function elseif(Condition|string $condition, callable $callable, bool $double = true) : self
+    public function elseif(Condition|string $condition, callable $callable, bool $double = false) : self
     {
         return $this->if($condition, $callable, $double, 'elif');
     }
