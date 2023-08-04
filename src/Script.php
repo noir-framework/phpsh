@@ -239,18 +239,25 @@ class Script
 
     /**
      * @param string $expression
-     * @param bool|array $arguments
+     * @param array $arguments
      * @return self
      */
-    public function printf(string $expression, bool|array $arguments = false) : self
+    public function printf(string $expression, array $arguments = []) : self
     {
         return $this->line(implode(' ', [
             'printf',
             static::doubleQuote($expression),
-            $arguments ? static::doubleQuote(implode('" "', $arguments)) : '',
+            !empty($arguments) ? static::doubleQuote(implode('" "', $arguments)) : '',
         ]));
     }
 
+    /**
+     * @param string|Script $env
+     * @param string $command
+     * @param array $arguments
+     * @param bool $needs_escape
+     * @return self
+     */
     public function commandWithEnv(string|Script $env, string $command, array $arguments = [], bool $needs_escape = false) : self
     {
         $env = (string) $env;
