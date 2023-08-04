@@ -10,13 +10,13 @@ class Condition
 
     /**
      * Initialize a condition
-     * @param bool|string $expression
+     * @param string $expression
      * @return self
      */
-    public static function create(bool|string $expression = false) : self
+    public static function create(string $expression = '') : self
     {
-        $instance = new static();
-        if ($expression) {
+        $instance = new self();
+        if (!empty($expression)) {
             return $instance->addFragment($expression);
         } else {
             return $instance;
@@ -246,7 +246,7 @@ class Condition
      * @param $variable
      * @return string
      */
-    protected function safeVariable($variable) : string
+    protected function safeVariable(string $variable) : string
     {
         if ($variable[0] !== '$') {
             return '$'. $variable;
@@ -257,10 +257,10 @@ class Condition
 
     /**
      * Remove $ from a variable
-     * @param $variable
+     * @param string $variable
      * @return string
      */
-    protected function removeDollarSign($variable) : string
+    protected function removeDollarSign(string $variable) : string
     {
         if ($variable[0] === '$') {
             return substr($variable, 1);
