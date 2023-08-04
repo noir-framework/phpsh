@@ -178,6 +178,7 @@ class Script
      */
     public function while(Condition|string $condition, callable $callable) : self
     {
+        $condition = (string) $condition;
         return $this
             ->line(sprintf('while [ %s ]; do', $condition))
             ->line($this->newNestedScript($callable))
@@ -300,6 +301,7 @@ class Script
      */
     public static function backtick(Script|string $expression) : string
     {
+        $expression = (string) $expression;
         return sprintf('`%s`', $expression);
     }
 
@@ -577,7 +579,7 @@ class Script
             if(empty($this->fragments[$frag_no])) {
                 throw new RuntimeException('Cannot append fragment to current line, thie line is empty');
             }
-            if(str_starts_with(';', $line) || str_starts_with('\\', $this->fragments[$frag_no]) || preg_match('/\s+$/', $this->fragments[$frag_no])) {
+            if(str_starts_with($line, ';') || str_starts_with($this->fragments[$frag_no], '\\') || preg_match('/\s+$/', $this->fragments[$frag_no])) {
                 $space = '';
             } else {
                 $space = ' ';
