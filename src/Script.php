@@ -17,7 +17,7 @@ class Script
     /**
      * @param string $path
      * @param string|array $arguments
-     * @return $this
+     * @return self
      */
     public function shebang(string $path = '/bin/sh', string|array $arguments = '') : self
     {
@@ -59,7 +59,7 @@ class Script
     }
 
     /**
-     * @return $this
+     * @return self
      */
     public function pipe(): self {
         return $this->put('|');
@@ -69,7 +69,7 @@ class Script
      * @param int $fd
      * @param string $op
      * @param string $dst
-     * @return $this
+     * @return self
      */
     public function redirect(int $fd, string $op, string $dst) : self
     {
@@ -90,7 +90,7 @@ class Script
      */
     public function if(Condition|string $condition, callable $callable, bool $double = false, string $tag = 'if') : self
     {
-        $script = $this->newNestedScript($callable);
+        $script = (string)$this->newNestedScript($callable);
 
         return $this
             ->line(implode(' ', [
@@ -109,7 +109,7 @@ class Script
      */
     public function else(callable $callable) : self
     {
-        $script = $this->newNestedScript($callable);
+        $script = (string)$this->newNestedScript($callable);
 
         return $this
             ->line('else')
@@ -154,7 +154,7 @@ class Script
     {
         return $this
             ->line(sprintf('case $%s in', $variable))
-            ->line($this->newNestedScript($callable))
+            ->line((string)$this->newNestedScript($callable))
             ->line('esac');
     }
 
@@ -167,7 +167,7 @@ class Script
     {
         return $this
             ->line("$pattern)")
-            ->line($this->newNestedScript($callable))
+            ->line((string)$this->newNestedScript($callable))
             ->line(';;');
     }
 
@@ -181,7 +181,7 @@ class Script
         $condition = (string) $condition;
         return $this
             ->line(sprintf('while [ %s ]; do', $condition))
-            ->line($this->newNestedScript($callable))
+            ->line((string)$this->newNestedScript($callable))
             ->line('done');
     }
 
@@ -263,7 +263,7 @@ class Script
      * @param string $command
      * @param array $arguments
      * @param bool $needs_escape
-     * @return $this
+     * @return self
      */
     public function command(string $command, array $arguments = [], bool $needs_escape = false) : self
     {
@@ -307,7 +307,7 @@ class Script
 
     /**
      * @param int|string $seconds
-     * @return $this
+     * @return self
      */
     public function sleep(int|string $seconds) : self
     {
@@ -322,7 +322,7 @@ class Script
      * @param int|string $mode
      * @param string|array $file
      * @param bool $recursive
-     * @return $this
+     * @return self
      */
     public function chmod(int|string $mode, string|array $file, bool $recursive = false) : self
     {
@@ -345,7 +345,7 @@ class Script
      * @param string $ownership
      * @param string|array $file
      * @param bool $recursive
-     * @return $this
+     * @return self
      */
     public function chown(string $ownership, string|array $file, bool $recursive = false) : self
     {
@@ -367,7 +367,7 @@ class Script
     /**
      * @param string $directory
      * @param bool $recursive
-     * @return $this
+     * @return self
      */
     public function mkdir(string $directory, bool $recursive = false) : self
     {
@@ -384,7 +384,7 @@ class Script
 
     /**
      * @param string $directory
-     * @return $this
+     * @return self
      */
     public function chdir(string $directory) : self
     {
@@ -399,7 +399,7 @@ class Script
      * @param string|array $path
      * @param bool $recursive
      * @param bool $force
-     * @return $this
+     * @return self
      */
     public function rm(string|array $path, bool $recursive = false, bool $force = false): self {
         if(empty($path)) {
@@ -423,14 +423,14 @@ class Script
     }
 
     /**
-     * @return $this
+     * @return self
      */
     public function and(): self {
         return $this->put('&&');
     }
 
     /**
-     * @return $this
+     * @return self
      */
     public function or(): self {
         return $this->put('||');
@@ -438,7 +438,7 @@ class Script
 
     /**
      * @param int $code
-     * @return $this
+     * @return self
      */
     public function exit(int $code = 0): self {
         return $this->line(sprintf('exit %d', $code));
@@ -446,14 +446,14 @@ class Script
 
     /**
      * @param string $file
-     * @return $this
+     * @return self
      */
     public function touch(string $file): self {
         return $this->line(sprintf('touch %s', $file));
     }
 
     /**
-     * @return $this
+     * @return self
      */
     public function semiColon(): self {
         return $this->put(';');
@@ -462,7 +462,7 @@ class Script
     /**
      * @param int|array $pid
      * @param int $signal
-     * @return $this
+     * @return self
      */
     public function kill(int|array $pid, int $signal = 15): self {
         if(is_array($pid)) {
@@ -474,7 +474,7 @@ class Script
 
     /**
      * @param string|null $file
-     * @return $this
+     * @return self
      */
     public function cat(?string $file = null): self {
         return $this->line($file === null ? 'cat' : sprintf('cat %s', $file));
@@ -482,7 +482,7 @@ class Script
 
     /**
      * @param string|null $file
-     * @return $this
+     * @return self
      */
     public function tac(?string $file = null): self {
         return $this->line($file === null ? 'tac' : sprintf('tac %s', $file));
@@ -492,7 +492,7 @@ class Script
      * @param string|null $file
      * @param int $lines
      * @param bool $bytes
-     * @return $this
+     * @return self
      */
     public function tail(?string $file = null, int $lines = 10, bool $bytes = false): self {
         if($bytes) {
@@ -513,7 +513,7 @@ class Script
      * @param string|null $file
      * @param int $lines
      * @param bool $bytes
-     * @return $this
+     * @return self
      */
     public function head(?string $file = null, int $lines = 10, bool $bytes = false): self {
         if($bytes) {
@@ -531,7 +531,8 @@ class Script
     }
 
     /**
-     * @return $this
+     * @param bool $with_tab
+     * @return self
      */
     public function nextLine(bool $with_tab = true): self {
         //XXX it's important to be handled in this way!
@@ -594,7 +595,7 @@ class Script
     /**
      * Create a new nested script fragment
      * @param callable $callable
-     * @return $this
+     * @return self
      */
     protected function newNestedScript(callable $callable) : Script
     {
