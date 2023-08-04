@@ -15,19 +15,23 @@ class Script
 
     /**
      * @param string $path
-     * @param array $arguments
+     * @param string|array $arguments
      * @return $this
      */
-    public function shebang(string $path = '/bin/sh', array $arguments = []) : self
+    public function shebang(string $path = '/bin/sh', string|array $arguments = '') : self
     {
 
         if(!empty($this->fragments)) {
             throw new RuntimeException('Shebang must be called before everything else');
         }
 
+        if(!empty($arguments) && is_array($arguments)) {
+            $arguments = implode(' ', $arguments);
+        }
+
         return $this->line(implode(' ', [
             '#!' . $path,
-            empty($arguments) ? '' : implode(' ', $arguments)
+            $arguments
         ]));
 
     }
