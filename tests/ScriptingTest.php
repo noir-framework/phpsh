@@ -5,6 +5,7 @@ namespace PhpSh\Tests;
 
 use PhpSh\Script;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 class ScriptingTest extends TestCase
 {
@@ -41,6 +42,18 @@ class ScriptingTest extends TestCase
 
         $command = (new Script())
             ->command('kill', [-15, 1])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        $script = (new Script())
+            ->kill([1, 2, 3], 15)
+            ->generate();
+
+        $this->assertEquals('kill -15 1 2 3', $script);
+
+        $command = (new Script())
+            ->command('kill', [-15, 1, 2, 3])
             ->generate();
 
         $this->assertEquals($command, $script);
@@ -118,6 +131,35 @@ class ScriptingTest extends TestCase
             ->generate();
 
         $this->assertEquals($command, $script);
+
+    }
+
+    /** @test */
+    public function createAnd()
+    {
+
+        $script = (new Script())
+            ->echo('test')
+            ->and()
+            ->echo('test2')
+            ->generate();
+
+        $this->assertEquals('echo -n test && echo -n test2', $script);
+
+        $command = (new Script())
+            ->command('echo', ['-n', 'test'])
+            ->and()
+            ->command('echo', ['-n', 'test2'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        // Execute it!
+        $this->assertEquals('testtest2', shell_exec($script));
+
+        $this->expectException(RuntimeException::class);
+
+        (new Script())->and()->generate();
 
     }
 
