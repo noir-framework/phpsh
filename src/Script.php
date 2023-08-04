@@ -36,9 +36,10 @@ class Script
      * Set the value of a variable
      * @param string $variable
      * @param Script|string $expression
+     * @param bool $with_export
      * @return self
      */
-    public function set(string $variable, Script|string $expression) : self
+    public function set(string $variable, Script|string $expression, bool $with_export = false) : self
     {
         if(is_string($expression) && !is_numeric($expression)) {
             $expression = static::doubleQuote($expression);
@@ -46,8 +47,11 @@ class Script
             $expression = static::backtick($expression);
         }
 
+        $export = $with_export ? 'export ' : '';
+
         return $this->line(sprintf(
-            '%s=%s',
+            '%s%s=%s',
+            $export,
             $variable,
             $expression
         ));
