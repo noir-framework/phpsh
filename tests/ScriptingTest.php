@@ -531,4 +531,40 @@ class ScriptingTest extends TestCase
 
     }
 
+    /** @test  */
+    public function testPipe()
+    {
+
+        $script = (new Script())
+            ->echo('test')
+            ->pipe()
+            ->cat()
+            ->generate();
+
+        $this->assertEquals('echo -n test | cat', $script);
+        $this->assertEquals('test', shell_exec($script));
+
+        $command = (new Script())
+            ->command('echo', ['-n', 'test'])
+            ->pipe()
+            ->command('cat')
+            ->generate();
+
+        $this->assertEquals($command, $script);
+        $this->assertEquals('test', shell_exec($command));
+
+        $command = (new Script())
+            ->command('echo', ['-n', 'test', '|', 'cat'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+        $this->assertEquals('test', shell_exec($command));
+
+        $this->expectException(RuntimeException::class);
+        (new Script())
+            ->pipe()
+            ->generate();
+
+    }
+
 }
