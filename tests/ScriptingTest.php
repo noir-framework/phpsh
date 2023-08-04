@@ -273,4 +273,161 @@ class ScriptingTest extends TestCase
 
     }
 
+    /** @test  */
+    public function chdirCommand()
+    {
+
+        $script = (new Script())
+            ->chdir('/home')
+            ->generate();
+
+        $this->assertEquals('cd /home', $script);
+
+        $command = (new Script())
+            ->command('cd', ['/home'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+    }
+
+    /** @test  */
+    public function mkdirCommand(): void
+    {
+
+            $script = (new Script())
+                ->mkdir('/home/home')
+                ->generate();
+
+            $this->assertEquals('mkdir /home/home', $script);
+
+            $command = (new Script())
+                ->command('mkdir', ['/home/home'])
+                ->generate();
+
+            $this->assertEquals($command, $script);
+
+            $script = (new Script())
+                ->mkdir('/home/home', true)
+                ->generate();
+
+            $this->assertEquals('mkdir -p /home/home', $script);
+
+            $command = (new Script())
+                ->command('mkdir', ['-p', '/home/home'])
+                ->generate();
+
+            $this->assertEquals($command, $script);
+
+    }
+
+    public function testChmodCommand(): void
+    {
+
+        $script = (new Script())
+            ->chmod(777, '/home/home')
+            ->generate();
+
+        $this->assertEquals('chmod 777 /home/home', $script);
+
+        $command = (new Script())
+            ->command('chmod', ['777', '/home/home'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        $script = (new Script())
+            ->chmod("777", ['/home/home', '/home/home2'])
+            ->generate();
+
+        $this->assertEquals('chmod 777 /home/home /home/home2', $script);
+
+        $command = (new Script())
+            ->command('chmod', ['777', '/home/home', '/home/home2'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        // recursive directories
+        $script = (new Script())
+            ->chmod(777, '/home/home', true)
+            ->generate();
+
+        $this->assertEquals('chmod -R 777 /home/home', $script);
+
+        $command = (new Script())
+            ->command('chmod', ['-R','777', '/home/home'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        $script = (new Script())
+            ->chmod("777", ['/home/home', '/home/home2'], true)
+            ->generate();
+
+        $this->assertEquals('chmod -R 777 /home/home /home/home2', $script);
+
+        $command = (new Script())
+            ->command('chmod', ['-R', '777', '/home/home', '/home/home2'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+    }
+
+    /** @test */
+    public function testChownCommand(): void
+    {
+
+        $script = (new Script())
+            ->chown('root.root', '/home/home')
+            ->generate();
+
+        $this->assertEquals('chown root.root /home/home', $script);
+
+        $command = (new Script())
+            ->command('chown', ['root.root', '/home/home'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        $script = (new Script())
+            ->chown("root.root", ['/home/home', '/home/home2'])
+            ->generate();
+
+        $this->assertEquals('chown root.root /home/home /home/home2', $script);
+
+        $command = (new Script())
+            ->command('chown', ['root.root', '/home/home', '/home/home2'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        // recursive directories
+        $script = (new Script())
+            ->chown('root.root', '/home/home', true)
+            ->generate();
+
+        $this->assertEquals('chown -R root.root /home/home', $script);
+
+        $command = (new Script())
+            ->command('chown', ['-R', 'root.root', '/home/home'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        $script = (new Script())
+            ->chown("root.root", ['/home/home', '/home/home2'], true)
+            ->generate();
+
+        $this->assertEquals('chown -R root.root /home/home /home/home2', $script);
+
+        $command = (new Script())
+            ->command('chown', ['-R', 'root.root', '/home/home', '/home/home2'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+    }
+
 }
