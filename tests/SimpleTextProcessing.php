@@ -10,7 +10,8 @@ use PHPUnit\Framework\TestCase;
 class SimpleTextProcessing extends TestCase {
 
     /** @test */
-    public function it_createCatCommand(): void {
+    public function createCatCommand(): void
+    {
 
         $script = (new Script())
             ->echo('test')
@@ -20,27 +21,22 @@ class SimpleTextProcessing extends TestCase {
 
         $this->assertEquals('echo -n test | cat', $script);
 
-        $this->assertEquals('test', shell_exec($script));
-
-    }
-
-    /** @test */
-    public function it_createCatCommand2(): void {
-
-        $script = (new Script())
+        $command = (new Script())
             ->command('echo', ['-n', 'test'])
             ->pipe()
             ->command('cat')
             ->generate();
 
-        $this->assertEquals('echo -n test | cat', $script);
+        $this->assertEquals($command, $script);
 
+        // Execute it!
         $this->assertEquals('test', shell_exec($script));
 
     }
 
     /** @test */
-    public function it_createTacCommand(): void {
+    public function createTacCommand(): void
+    {
 
         $script = (new Script())
             ->echo('test')
@@ -50,27 +46,21 @@ class SimpleTextProcessing extends TestCase {
 
         $this->assertEquals('echo -n test | tac', $script);
 
-        $this->assertEquals('test', shell_exec($script));
-
-    }
-
-    /** @test */
-    public function it_createTacCommand2(): void {
-
-        $script = (new Script())
+        $command = (new Script())
             ->command('echo', ['-n', 'test'])
             ->pipe()
             ->command('tac')
             ->generate();
 
-        $this->assertEquals('echo -n test | tac', $script);
+        $this->assertEquals($command, $script);
 
         $this->assertEquals('test', shell_exec($script));
 
     }
 
     /** @test */
-    public function it_createTailCommand(): void {
+    public function createTailCommandLines(): void
+    {
 
         $script = (new Script())
             ->echo('test')
@@ -80,27 +70,48 @@ class SimpleTextProcessing extends TestCase {
 
         $this->assertEquals('echo -n test | tail -n1', $script);
 
-        $this->assertEquals('test', shell_exec($script));
 
-    }
-
-    /** @test */
-    public function it_createTailCommand2(): void {
-
-        $script = (new Script())
+        $command = (new Script())
             ->command('echo', ['-n', 'test'])
             ->pipe()
             ->command('tail', ['-n1'])
             ->generate();
 
-        $this->assertEquals('echo -n test | tail -n1', $script);
+        $this->assertEquals($command, $script);
 
+        // Execute it!
         $this->assertEquals('test', shell_exec($script));
 
     }
 
     /** @test */
-    public function it_createHeadCommand(): void {
+    public function createTailCommandChars(): void
+    {
+
+        $script = (new Script())
+            ->echo('test')
+            ->pipe()
+            ->tail(null, 4, true)
+            ->generate();
+
+        $this->assertEquals('echo -n test | tail -c4', $script);
+
+        $command = (new Script())
+            ->command('echo', ['-n', 'test'])
+            ->pipe()
+            ->command('tail', ['-c4'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        // Execute it!
+        $this->assertEquals('test', shell_exec($script));
+
+    }
+
+    /** @test */
+    public function createHeadCommandLines(): void
+    {
 
         $script = (new Script())
             ->echo('test')
@@ -110,21 +121,40 @@ class SimpleTextProcessing extends TestCase {
 
         $this->assertEquals('echo -n test | head -n1', $script);
 
-        $this->assertEquals('test', shell_exec($script));
-
-    }
-
-    /** @test */
-    public function it_createHeadCommand2(): void {
-
-        $script = (new Script())
+        $command = (new Script())
             ->command('echo', ['-n', 'test'])
             ->pipe()
             ->command('head', ['-n1'])
             ->generate();
 
-        $this->assertEquals('echo -n test | head -n1', $script);
+        $this->assertEquals($command, $script);
 
+        // Execute it!
+        $this->assertEquals('test', shell_exec($script));
+
+    }
+
+    /** @test */
+    public function createHeadCommandChars(): void
+    {
+
+        $script = (new Script())
+            ->echo('test')
+            ->pipe()
+            ->head(null, 4, true)
+            ->generate();
+
+        $this->assertEquals('echo -n test | head -c4', $script);
+
+        $command = (new Script())
+            ->command('echo', ['-n', 'test'])
+            ->pipe()
+            ->command('head', ['-c4'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        // Execute it!
         $this->assertEquals('test', shell_exec($script));
 
     }
