@@ -243,7 +243,7 @@ class Condition
     }
 
     /**
-     * @param $variable
+     * @param string $variable
      * @return string
      */
     protected function safeVariable(string $variable) : string
