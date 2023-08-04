@@ -80,13 +80,6 @@ class Script
         return $this->put(sprintf('%s%s %s', $fd, $op, $dst));
     }
 
-    public function execute(Script|string $expression) : self
-    {
-        $expression = (string) $expression;
-
-        return $this->addFragment($expression, true);
-    }
-
     /**
      * Construct an if condition
      * @param string|Condition $condition
