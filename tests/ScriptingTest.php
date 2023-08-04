@@ -495,4 +495,40 @@ class ScriptingTest extends TestCase
 
     }
 
+    /** @test */
+    public function testShebang()
+    {
+
+            $script = (new Script())
+                ->shebang()
+                ->generate();
+
+            $this->assertEquals('#!/bin/sh', $script);
+
+            $command = (new Script())
+                ->command('#!/bin/sh')
+                ->generate();
+
+            $this->assertEquals($command, $script);
+
+            $script = (new Script())
+                ->shebang('/usr/bin/env', ['sh', '-x'])
+                ->generate();
+
+            $this->assertEquals('#!/usr/bin/env sh -x', $script);
+
+            $command = (new Script())
+                ->command('#!/usr/bin/env sh -x')
+                ->generate();
+
+            $this->assertEquals($command, $script);
+
+        $this->expectException(RuntimeException::class);
+        (new Script())
+            ->sleep('test')
+            ->shebang()
+            ->generate();
+
+    }
+
 }
