@@ -49,7 +49,7 @@ class Script
         if($expression instanceof Script) {
             $expression = static::backtick($expression->generate());
         } elseif(!str_starts_with($expression, '`') && !is_numeric($expression)) {
-            $expression = static ::doubleQuote($expression);
+            $expression = static::doubleQuote($expression);
         }
 
         $export = $with_export ? 'export ' : '';
