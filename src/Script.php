@@ -540,7 +540,7 @@ class Script
      */
     public function nextLine(bool $with_tab = true): self {
         //XXX it's important to be handled in this way!
-        return $with_tab ? $this->put( "\\\\\n\t") : $this->line("");
+        return $with_tab ? $this->put( "\\\\\n\t") : $this->put("\\\\\n");
     }
 
     /**
