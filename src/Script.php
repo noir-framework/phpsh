@@ -70,12 +70,17 @@ class Script
 
     /**
      * @param int $fd
+     * @param string $op
      * @param string $dst
      * @return $this
      */
-    public function redirect(int $fd, string $dst) : self
+    public function redirect(int $fd, string $op, string $dst) : self
     {
-        return $this->put(sprintf('%s>%s', $fd, $dst));
+        $allowed = ['>', '>>', '<', '<<', '>&', '<&', '>&-', '<&-'];
+        if(!in_array($op, $allowed)) {
+            throw new RuntimeException(sprintf('Invalid redirection operator: %s', $op));
+        }
+        return $this->put(sprintf('%s%s%s', $fd, $op, $dst));
     }
 
     public function execute(Script|string $expression) : self
