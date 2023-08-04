@@ -585,7 +585,7 @@ class Script
         } else {
             $frag_no = count($this->fragments) - 1;
             if(empty($this->fragments[$frag_no])) {
-                throw new RuntimeException('Cannot append fragment to current line, thie line is empty');
+                throw new RuntimeException('Cannot append fragment to current line, this line is empty');
             }
             if(str_starts_with($line, ';') || str_starts_with($this->fragments[$frag_no], '\\') || preg_match('/\s+$/', $this->fragments[$frag_no])) {
                 $space = '';
