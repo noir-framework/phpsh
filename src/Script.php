@@ -267,12 +267,12 @@ class Script
             $arguments = array_map('escapeshellarg', $arguments);
         }
 
-        if($needs_escape) {
-            $command = escapeshellcmd($command);
-        }
-
         if(empty($command)) {
             return $this->line(implode(' ', $arguments));
+        }
+
+        if($needs_escape) {
+            $command = escapeshellcmd($command);
         }
 
         return $this->line(implode(' ', [
