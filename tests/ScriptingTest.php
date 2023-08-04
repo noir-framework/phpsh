@@ -88,6 +88,10 @@ class ScriptingTest extends TestCase
 
         $this->assertEquals($command, $script);
 
+        $this->expectException(RuntimeException::class);
+        (new Script())->semiColon()->generate();
+
+
     }
 
     /** @test */
@@ -158,8 +162,35 @@ class ScriptingTest extends TestCase
         $this->assertEquals('testtest2', shell_exec($script));
 
         $this->expectException(RuntimeException::class);
-
         (new Script())->and()->generate();
+
+    }
+
+    /** @test */
+    public function createOr()
+    {
+
+        $script = (new Script())
+            ->echo('test')
+            ->or()
+            ->echo('test2')
+            ->generate();
+
+        $this->assertEquals('echo -n test || echo -n test2', $script);
+
+        $command = (new Script())
+            ->command('echo', ['-n', 'test'])
+            ->or()
+            ->command('echo', ['-n', 'test2'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        // Execute it!
+        $this->assertEquals('test', shell_exec($script));
+
+        $this->expectException(RuntimeException::class);
+        (new Script())->or()->generate();
 
     }
 
