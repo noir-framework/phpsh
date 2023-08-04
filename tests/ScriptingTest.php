@@ -194,4 +194,83 @@ class ScriptingTest extends TestCase
 
     }
 
+    /** @test */
+    public function createRmCommand(): void
+    {
+
+        $script = (new Script())
+            ->rm('test.txt')
+            ->generate();
+
+        $this->assertEquals('rm test.txt', $script);
+
+        $command = (new Script())
+            ->command('rm', ['test.txt'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        $script = (new Script())
+            ->rm(['test.txt', 'test2.txt'])
+            ->generate();
+
+        $this->assertEquals('rm test.txt test2.txt', $script);
+
+        $command = (new Script())
+            ->command('rm', ['test.txt', 'test2.txt'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        $script = (new Script())
+            ->rm('text.txt' ,true)
+            ->generate();
+
+        $this->assertEquals('rm -r text.txt', $script);
+
+        $command = (new Script())
+            ->command('rm', ['-r', 'text.txt'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        $script = (new Script())
+            ->rm(['text.txt', 'text2.txt'], true)
+            ->generate();
+
+        $this->assertEquals('rm -r text.txt text2.txt', $script);
+
+        $command = (new Script())
+            ->command('rm', ['-r', 'text.txt', 'text2.txt'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        //
+        $script = (new Script())
+            ->rm('text.txt' ,true, true)
+            ->generate();
+
+        $this->assertEquals('rm -r -f text.txt', $script);
+
+        $command = (new Script())
+            ->command('rm', ['-r -f', 'text.txt'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        $script = (new Script())
+            ->rm(['text.txt', 'text2.txt'], true, true)
+            ->generate();
+
+        $this->assertEquals('rm -r -f text.txt text2.txt', $script);
+
+        $command = (new Script())
+            ->command('rm', ['-r', '-f', 'text.txt', 'text2.txt'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+    }
+
 }

@@ -412,19 +412,19 @@ class Script
         }
 
         if(is_array($path)) {
-            $path = implode(' ', $path);
+            $path = trim(implode(' ', $path));
         }
 
-        $options = [];
+        $options = '';
         if($recursive) {
-            $options[] = '-r';
+            $options .= '-r ';
         }
 
         if($force) {
-            $options[] = '-f';
+            $options .= '-f ';
         }
 
-        return $this->line(sprintf('rm %s %s', implode(' ', $options), $path));
+        return $this->line(sprintf('rm %s%s', $options, $path));
     }
 
     /**
