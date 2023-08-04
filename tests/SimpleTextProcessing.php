@@ -69,4 +69,64 @@ class SimpleTextProcessing extends TestCase {
 
     }
 
+    /** @test */
+    public function it_createTailCommand(): void {
+
+        $script = (new Script())
+            ->echo('test')
+            ->pipe()
+            ->tail(null, 1)
+            ->generate();
+
+        $this->assertEquals('echo -n test | tail -n1', $script);
+
+        $this->assertEquals('test', shell_exec($script));
+
+    }
+
+    /** @test */
+    public function it_createTailCommand2(): void {
+
+        $script = (new Script())
+            ->command('echo', ['-n', 'test'])
+            ->pipe()
+            ->command('tail', ['-n1'])
+            ->generate();
+
+        $this->assertEquals('echo -n test | tail -n1', $script);
+
+        $this->assertEquals('test', shell_exec($script));
+
+    }
+
+    /** @test */
+    public function it_createHeadCommand(): void {
+
+        $script = (new Script())
+            ->echo('test')
+            ->pipe()
+            ->head(null, 1)
+            ->generate();
+
+        $this->assertEquals('echo -n test | head -n1', $script);
+
+        $this->assertEquals('test', shell_exec($script));
+
+    }
+
+    /** @test */
+    public function it_createHeadCommand2(): void {
+
+        $script = (new Script())
+            ->command('echo', ['-n', 'test'])
+            ->pipe()
+            ->command('head', ['-n1'])
+            ->generate();
+
+        $this->assertEquals('echo -n test | head -n1', $script);
+
+        $this->assertEquals('test', shell_exec($script));
+
+    }
+
 }

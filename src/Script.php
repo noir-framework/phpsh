@@ -494,33 +494,45 @@ class Script
     }
 
     /**
-     * @param string $file
+     * @param string|null $file
      * @param int $lines
      * @param bool $bytes
      * @return $this
      */
-    public function tail(string $file = '-', int $lines = 10, bool $bytes = false): self {
+    public function tail(?string $file = null, int $lines = 10, bool $bytes = false): self {
         if($bytes) {
-            $op = '-c';
+            $op = 'c';
         } else {
-            $op = '-n';
+            $op = 'n';
         }
-        return $this->put(sprintf('tail %d %d %s', $op, $lines, $file));
+
+        if(empty($file) || $file === '-') {
+            $file = '';
+        } else {
+            $file = ' ' . $file;
+        }
+        return $this->put(sprintf('tail -%s%d%s', $op, $lines, $file));
     }
 
     /**
-     * @param string $file
+     * @param string|null $file
      * @param int $lines
      * @param bool $bytes
      * @return $this
      */
-    public function head(string $file = '-', int $lines = 10, bool $bytes = false): self {
+    public function head(?string $file = null, int $lines = 10, bool $bytes = false): self {
         if($bytes) {
-            $op = '-c';
+            $op = 'c';
         } else {
-            $op = '-n';
+            $op = 'n';
         }
-        return $this->put(sprintf('head %s %d %s', $op, $lines, $file));
+
+        if(empty($file) || $file === '-') {
+            $file = '';
+        } else {
+            $file = ' ' . $file;
+        }
+        return $this->put(sprintf('head -%s%d%s', $op, $lines, $file));
     }
 
     /**
