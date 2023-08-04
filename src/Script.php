@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php /** @noinspection PhpUnused */
+declare(strict_types=1);
 
 namespace PhpSh;
 
@@ -474,6 +475,52 @@ class Script
         }
 
         return $this->line(sprintf('kill -%s %s', $signal, $pid));
+    }
+
+    /**
+     * @param string $file
+     * @return $this
+     */
+    public function cat(string $file): self {
+        return $this->line(sprintf('cat %s', $file));
+    }
+
+    /**
+     * @param string $file
+     * @return $this
+     */
+    public function tac(string $file): self {
+        return $this->line(sprintf('tac %s', $file));
+    }
+
+    /**
+     * @param string $file
+     * @param int $lines
+     * @param bool $bytes
+     * @return $this
+     */
+    public function tail(string $file = '-', int $lines = 10, bool $bytes = false): self {
+        if($bytes) {
+            $op = '-c';
+        } else {
+            $op = '-n';
+        }
+        return $this->put(sprintf('tail %d %d %s', $op, $lines, $file));
+    }
+
+    /**
+     * @param string $file
+     * @param int $lines
+     * @param bool $bytes
+     * @return $this
+     */
+    public function head(string $file = '-', int $lines = 10, bool $bytes = false): self {
+        if($bytes) {
+            $op = '-c';
+        } else {
+            $op = '-n';
+        }
+        return $this->put(sprintf('head %s %d %s', $op, $lines, $file));
     }
 
     /**
