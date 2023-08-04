@@ -486,11 +486,11 @@ class Script
     }
 
     /**
-     * @param string $file
+     * @param string|null $file
      * @return $this
      */
-    public function tac(string $file): self {
-        return $this->line(sprintf('tac %s', $file));
+    public function tac(?string $file = null): self {
+        return $this->line($file === null ? 'tac' : sprintf('tac %s', $file));
     }
 
     /**
