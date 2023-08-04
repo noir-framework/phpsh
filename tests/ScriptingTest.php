@@ -567,4 +567,29 @@ class ScriptingTest extends TestCase
 
     }
 
+    public function testRedirect() {
+
+        foreach([1, 2] as $fd) {
+
+            foreach(['>', '>>', '<', '<<', '>&', '<&', '>&-', '<&-'] as $op) {
+
+                $script = (new Script())
+                    ->echo('test')
+                    ->redirect($fd, $op, '/tmp/test')
+                    ->generate();
+
+                $this->assertEquals("echo -n test $fd$op /tmp/test", $script);
+
+                $command = (new Script())
+                    ->command('echo', ['-n', 'test', $fd.$op, '/tmp/test'])
+                    ->generate();
+
+                $this->assertEquals($command, $script);
+
+            }
+
+        }
+
+    }
+
 }
