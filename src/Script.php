@@ -356,6 +356,10 @@ class Script
      */
     public function chown(string $ownership, string|array $file, bool $recursive = false) : self
     {
+        if(empty($ownership)) {
+            throw new RuntimeException('Ownership cannot be empty');
+        }
+
         if(empty($file)) {
             throw new RuntimeException('File cannot be empty');
         }
