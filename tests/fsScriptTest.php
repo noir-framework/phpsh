@@ -108,4 +108,58 @@ class fsScriptTest extends TestCase{
 
     }
 
+    public function testChmodCommand(): void
+    {
+
+        $script = (new Script())
+            ->chmod(777, '/home/home')
+            ->generate();
+
+        $this->assertEquals('chmod 777 /home/home', $script);
+
+        $command = (new Script())
+            ->command('chmod', ['777', '/home/home'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        $script = (new Script())
+            ->chmod("777", ['/home/home', '/home/home2'])
+            ->generate();
+
+        $this->assertEquals('chmod 777 /home/home /home/home2', $script);
+
+        $command = (new Script())
+            ->command('chmod', ['777', '/home/home', '/home/home2'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        // recursive directories
+        $script = (new Script())
+            ->chmod(777, '/home/home', true)
+            ->generate();
+
+        $this->assertEquals('chmod -R 777 /home/home', $script);
+
+        $command = (new Script())
+            ->command('chmod', ['-R','777', '/home/home'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        $script = (new Script())
+            ->chmod("777", ['/home/home', '/home/home2'], true)
+            ->generate();
+
+        $this->assertEquals('chmod -R 777 /home/home /home/home2', $script);
+
+        $command = (new Script())
+            ->command('chmod', ['-R', '777', '/home/home', '/home/home2'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+    }
+
 }
