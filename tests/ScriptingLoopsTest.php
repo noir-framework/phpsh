@@ -1,10 +1,10 @@
 <?php
 
 
-namespace PhpSh\Tests;
+namespace Noir\PhpSh\Tests;
 
-use PhpSh\Condition;
-use PhpSh\Script;
+use Noir\PhpSh\Condition;
+use Noir\PhpSh\Script;
 use PHPUnit\Framework\TestCase;
 
 class ScriptingLoopsTest extends TestCase

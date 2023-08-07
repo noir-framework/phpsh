@@ -1,7 +1,7 @@
 <?php /** @noinspection PhpUnused */
 declare(strict_types=1);
 
-namespace PhpSh;
+namespace Noir\PhpSh;
 
 use RuntimeException;
 
@@ -36,15 +36,15 @@ class Script
     /**
      * Set the value of a variable
      * @param string $variable
-     * @param Script|string $expression
+     * @param Script|string|int $expression
      * @param bool $with_export
      * @return self
      */
-    public function set(string $variable, Script|string $expression, bool $with_export = false) : self
+    public function set(string $variable, Script|string|int $expression, bool $with_export = false) : self
     {
         if($expression instanceof Script) {
             $expression = static::backtick($expression->generate());
-        } elseif(!str_starts_with($expression, '`') && !is_numeric($expression)) {
+        } elseif(!is_int($expression) && !str_starts_with($expression, '`') && !is_numeric($expression)) {
             $expression = static::doubleQuote($expression);
         }
 

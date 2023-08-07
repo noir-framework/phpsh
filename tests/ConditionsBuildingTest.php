@@ -1,9 +1,9 @@
 <?php
+declare(strict_types=1);
 
+namespace Noir\PhpSh\Tests;
 
-namespace PhpSh\Tests;
-
-use PhpSh\Condition;
+use Noir\PhpSh\Condition;
 use PHPUnit\Framework\TestCase;
 
 class ConditionsBuildingTest extends TestCase

@@ -1,12 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace PhpSh\Tests;
+namespace Noir\PhpSh\Tests;
 
-use PhpSh\Script;
-use PHPUnit\Framework\Attributes\CoversNothing;
+use Noir\Phpsh\Script;
 use PHPUnit\Framework\TestCase;
-#[CoversNothing]
+
 class SimpleTextProcessing extends TestCase {
 
     /** @test */

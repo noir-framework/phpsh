@@ -1,9 +1,10 @@
 <?php
+declare(strict_types=1);
 
-namespace PhpSh\Tests;
+namespace Noir\PhpSh\Tests;
 
-use PhpSh\Condition;
-use PhpSh\Script;
+use Noir\PhpSh\Condition;
+use Noir\PhpSh\Script;
 use PHPUnit\Framework\TestCase;
 
 class ScriptingConditionsTest extends TestCase
@@ -81,6 +82,6 @@ class ScriptingConditionsTest extends TestCase
                     });
             });
 
-        $this->assertEquals('OK', shell_exec($sh));
+        $this->assertEquals('OK', shell_exec((string)$sh));
     }
 }

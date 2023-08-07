@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace PhpSh;
+namespace Noir\PhpSh;
 
 class Condition
 {
@@ -35,55 +35,55 @@ class Condition
     }
 
     /**
-     * @param string $expression
+     * @param int|string $expression
      * @return self
      */
-    public function equals(string $expression) : self
+    public function equals(int|string $expression) : self
     {
         return $this->addFragment('-eq '. $expression);
     }
 
     /**
-     * @param string $expression
+     * @param int|string $expression
      * @return self
      */
-    public function notEquals(string $expression) : self
+    public function notEquals(int|string $expression) : self
     {
         return $this->addFragment('-ne '. $expression);
     }
 
     /**
-     * @param string $expression
+     * @param int|string $expression
      * @return self
      */
-    public function greaterThan(string $expression) : self
+    public function greaterThan(int|string $expression) : self
     {
         return $this->addFragment('-gt '. $expression);
     }
 
     /**
-     * @param string $expression
+     * @param int|string $expression
      * @return self
      */
-    public function lessThan(string $expression) : self
+    public function lessThan(int|string $expression) : self
     {
         return $this->addFragment('-lt '. $expression);
     }
 
     /**
-     * @param string $expression
+     * @param int|string $expression
      * @return self
      */
-    public function notLessThan(string $expression) : self
+    public function notLessThan(int|string $expression) : self
     {
         return $this->addFragment('-ge '. $expression);
     }
 
     /**
-     * @param string $expression
+     * @param int|string $expression
      * @return self
      */
-    public function notGreaterThan(string $expression) : self
+    public function notGreaterThan(int|string $expression) : self
     {
         return $this->addFragment('-le '. $expression);
     }

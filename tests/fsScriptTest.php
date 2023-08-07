@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace PhpSh\Tests;
+namespace Noir\PhpSh\Tests;
 
-use PhpSh\Script;
+use Noir\Phpsh\Script;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
