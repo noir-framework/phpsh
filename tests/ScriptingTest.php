@@ -397,4 +397,166 @@ class ScriptingTest extends TestCase
 
     }
 
+    /** @test */
+    public function testTailCommandWith(): void
+    {
+
+        $script = (new Script())
+            ->tail('/test')
+            ->generate();
+
+        $this->assertEquals('tail /test', $script);
+
+        $command = (new Script())
+            ->command('tail', ['/test'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        $script = (new Script())
+            ->tail('/test', 10)
+            ->generate();
+
+        $this->assertEquals('tail -n10 /test', $script);
+
+        $command = (new Script())
+            ->command('tail', ['-n10', '/test'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        $script = (new Script())
+            ->tail('/test', 10, true)
+            ->generate();
+
+        $this->assertEquals('tail -c10 /test', $script);
+
+        $command = (new Script())
+            ->command('tail', ['-c10', '/test'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        $this->expectException(RuntimeException::class);
+        (new Script())
+            ->tail('/test', null, true)
+            ->generate();
+
+    }
+
+    /** @test */
+    public function testTailCommandWithCat(): void
+    {
+
+        $script = (new Script())
+            ->cat('/etc/config')
+            ->pipe()
+            ->tail()
+            ->generate();
+
+        $this->assertEquals('cat /etc/config | tail', $script);
+
+        $command = (new Script())
+            ->command('cat', ['/etc/config', '|', 'tail'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        $script = (new Script())
+            ->cat('/etc/config')
+            ->pipe()
+            ->tail('-')
+            ->generate();
+
+        $this->assertEquals('cat /etc/config | tail', $script);
+
+        $command = (new Script())
+            ->command('cat', ['/etc/config', '|', 'tail'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+    }
+
+    /** @test */
+    public function testHeadCommandWith(): void
+    {
+
+        $script = (new Script())
+            ->head('/test')
+            ->generate();
+
+        $this->assertEquals('head /test', $script);
+
+        $command = (new Script())
+            ->command('head', ['/test'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        $script = (new Script())
+            ->head('/test', 10)
+            ->generate();
+
+        $this->assertEquals('head -n10 /test', $script);
+
+        $command = (new Script())
+            ->command('head', ['-n10', '/test'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        $script = (new Script())
+            ->head('/test', 10, true)
+            ->generate();
+
+        $this->assertEquals('head -c10 /test', $script);
+
+        $command = (new Script())
+            ->command('head', ['-c10', '/test'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        $this->expectException(RuntimeException::class);
+        (new Script())
+            ->head('/head', null, true)
+            ->generate();
+
+    }
+
+    /** @test */
+    public function testHeadCommandWithCat(): void
+    {
+
+        $script = (new Script())
+            ->cat('/etc/config')
+            ->pipe()
+            ->head()
+            ->generate();
+
+        $this->assertEquals('cat /etc/config | head', $script);
+
+        $command = (new Script())
+            ->command('cat', ['/etc/config', '|', 'head'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        $script = (new Script())
+            ->cat('/etc/config')
+            ->pipe()
+            ->head('-')
+            ->generate();
+
+        $this->assertEquals('cat /etc/config | head', $script);
+
+        $command = (new Script())
+            ->command('cat', ['/etc/config', '|', 'head'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+    }
+
 }

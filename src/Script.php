@@ -506,15 +506,25 @@ class Script
 
     /**
      * @param string|null $file
-     * @param int $lines
-     * @param bool $bytes
+     * @param int|null $amount
+     * @param bool $chars_mode
      * @return self
      */
-    public function tail(?string $file = null, int $lines = 10, bool $bytes = false): self {
-        if($bytes) {
-            $op = 'c';
+    public function tail(?string $file = null, ?int $amount = null, bool $chars_mode = false): self
+    {
+
+        if($chars_mode) {
+            if($amount === null) {
+                throw new RuntimeException('Chars mode requires amount of chars');
+            }
+            $op = ' -c';
         } else {
-            $op = 'n';
+            if($amount === null) {
+                $op = '';
+                $amount = '';
+            } else {
+                $op = ' -n';
+            }
         }
 
         if(empty($file) || $file === '-') {
@@ -522,20 +532,32 @@ class Script
         } else {
             $file = ' ' . $file;
         }
-        return $this->put(sprintf('tail -%s%d%s', $op, $lines, $file));
+
+        return $this->put(sprintf('tail%s%s%s', $op, $amount, $file), true);
+
     }
 
     /**
      * @param string|null $file
-     * @param int $lines
-     * @param bool $bytes
+     * @param int|null $amount
+     * @param bool $chars_mode
      * @return self
      */
-    public function head(?string $file = null, int $lines = 10, bool $bytes = false): self {
-        if($bytes) {
-            $op = 'c';
+    public function head(?string $file = null, ?int $amount = null, bool $chars_mode = false): self
+    {
+
+        if($chars_mode) {
+            if($amount === null) {
+                throw new RuntimeException('Chars mode requires amount of chars');
+            }
+            $op = ' -c';
         } else {
-            $op = 'n';
+            if($amount === null) {
+                $op = '';
+                $amount = '';
+            } else {
+                $op = ' -n';
+            }
         }
 
         if(empty($file) || $file === '-') {
@@ -543,7 +565,9 @@ class Script
         } else {
             $file = ' ' . $file;
         }
-        return $this->put(sprintf('head -%s%d%s', $op, $lines, $file));
+
+        return $this->put(sprintf('head%s%s%s', $op, $amount, $file), true);
+
     }
 
     /**
@@ -585,22 +609,39 @@ class Script
      * Add a new shell fragment
      * @param string $line
      * @param bool $newline
+     * @param bool $allow_empty_frags
      * @return self
      */
-    protected function addFragment(string $line, bool $newline) : self
+    protected function addFragment(string $line, bool $newline, bool $allow_empty_frags = false) : self
     {
         if($this->newline) {
+
             $this->fragments[] = $line;
+
         } else {
+
             $frag_no = count($this->fragments) - 1;
-            if(empty($this->fragments[$frag_no])) {
-                throw new RuntimeException('Cannot append fragment to current line, this line is empty');
+            if($allow_empty_frags) {
+
+                if(empty($this->fragments)) {
+                    $this->fragments[] = '';
+                    $frag_no = 0;
+                }
+
+            } else {
+
+                if(empty($this->fragments[$frag_no])) {
+                    throw new RuntimeException('Cannot append fragment to current line, this line is empty');
+                }
+
             }
-            if(str_starts_with($line, ';') || str_starts_with($this->fragments[$frag_no], '\\') || preg_match('/\s+$/', $this->fragments[$frag_no])) {
+
+            if($this->fragments[$frag_no] == '' || str_starts_with($line, ';') || str_starts_with($this->fragments[$frag_no], '\\') || preg_match('/\s+$/', $this->fragments[$frag_no])) {
                 $space = '';
             } else {
                 $space = ' ';
             }
+
             $this->fragments[$frag_no] .= $space . $line;
         }
 
@@ -634,12 +675,12 @@ class Script
         return $this->addFragment($expression, true);
     }
 
-    public function put(Script|string $expression) : self
+    public function put(Script|string $expression, bool $allow_empty_frags = false) : self
     {
         $expression = (string) $expression;
 
         $this->newline = false;
-        return $this->addFragment($expression, false);
+        return $this->addFragment($expression, false, $allow_empty_frags);
     }
 
 }
