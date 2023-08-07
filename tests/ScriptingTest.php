@@ -559,6 +559,7 @@ class ScriptingTest extends TestCase
 
     }
 
+    /** @test */
     public function testCommand(): void
     {
 
@@ -579,6 +580,32 @@ class ScriptingTest extends TestCase
             ->generate();
 
         $this->assertEquals('echo test | test', $script);
+
+    }
+
+    /** @test */
+    public function testCommandWithEnv(): void
+    {
+
+        $env = (new Script())->set('CONFIG', 'test');
+
+        $script = (new Script())
+            ->commandWithEnv($env, 'echo', ['test'], true)
+            ->generate();
+
+        $this->assertEquals('CONFIG="test" echo \'test\'', $script);
+
+        $script = (new Script())
+            ->commandWithEnv($env, 'echo', ['test'])
+            ->generate();
+
+        $this->assertEquals('CONFIG="test" echo test', $script);
+
+        $script = (new Script())
+            ->commandWithEnv($env, '', ['echo', 'test', '|', 'test'])
+            ->generate();
+
+        $this->assertEquals('CONFIG="test" echo test | test', $script);
 
     }
 
