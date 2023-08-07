@@ -609,4 +609,34 @@ class ScriptingTest extends TestCase
 
     }
 
+    /** @test */
+    public function testEnv(): void
+    {
+
+        $script = (new Script())
+            ->set('CONFIG', 'test')
+            ->generate();
+
+        $this->assertEquals('CONFIG="test"', $script);
+
+        $script = (new Script())
+            ->set('CONFIG', 'test', true)
+            ->generate();
+
+        $this->assertEquals('export CONFIG="test"', $script);
+
+        $script = (new Script())
+            ->set('CONFIG', (new Script())->command('echo', ['test']))
+            ->generate();
+
+        $this->assertEquals('CONFIG=`echo test`', $script);
+
+        $script = (new Script())
+            ->set('CONFIG', (new Script())->echo('test')->pipe()->command('grep', ['-v', 'test']))
+            ->generate();
+
+        $this->assertEquals('CONFIG=`echo -n test | grep -v test`', $script);
+
+    }
+
 }
