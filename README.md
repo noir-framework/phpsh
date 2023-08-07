@@ -74,7 +74,7 @@ If you discover any security related issues, please email nazmulpcc [at] gmail.c
 
 ## Credits
 
-- [deba12] (https://github.com/deba12)
+- [deba12](https://github.com/deba12)
 - [Nazmul Alam](https://github.com/nazmulpcc)
 - [All Contributors](../../contributors)
 
