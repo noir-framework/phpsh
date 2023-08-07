@@ -362,4 +362,39 @@ class ScriptingTest extends TestCase
 
     }
 
+    /** @test */
+    public function testCatCommand(): void
+    {
+
+        $script = (new Script())
+            ->cat('/etc/config')
+            ->generate();
+
+        $this->assertEquals('cat /etc/config', $script);
+
+        $command = (new Script())
+            ->command('cat', ['/etc/config'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+    }
+
+    /** @test */
+    public function testTacCommand(): void {
+
+            $script = (new Script())
+                ->tac('/etc/config')
+                ->generate();
+
+            $this->assertEquals('tac /etc/config', $script);
+
+            $command = (new Script())
+                ->command('tac', ['/etc/config'])
+                ->generate();
+
+            $this->assertEquals($command, $script);
+
+    }
+
 }
