@@ -18,8 +18,8 @@ If writing shell scripts make you *uncomfortable* because it feels like an ecryp
 ## Examples
 
 ```php
-use PhpSh\Condition;
-use PhpSh\Script;
+use NoirApi\Phpsh\Condition;
+use NoirApi\Phpsh\Script;
 
 $condition = Condition::create('$i')->lessThan(10);
 
@@ -74,6 +74,7 @@ If you discover any security related issues, please email nazmulpcc [at] gmail.c
 
 ## Credits
 
+- [deba12] (https://github.com/deba12)
 - [Nazmul Alam](https://github.com/nazmulpcc)
 - [All Contributors](../../contributors)
 
