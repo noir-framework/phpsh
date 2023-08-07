@@ -1,5 +1,5 @@
 {
-    "name": "nazmulpcc/phpsh",
+    "name": "noir/phpsh",
     "description": "Generate shell scripts from PHP with ease",
     "keywords": [
         "php",
@@ -8,13 +8,19 @@
         "bash",
         "bash-script"
     ],
-    "homepage": "https://github.com/nazmulpcc/phpsh",
+    "homepage": "https://github.com/noir-framework/phpsh",
     "license": "MIT",
     "authors": [
         {
             "name": "Nazmul Alam",
             "email": "nazmulpcc@gmail.com",
             "homepage": "https://github.com/nazmulpcc/",
+            "role": "Developer"
+        },
+        {
+            "name": "deba12",
+            "email": "int986@gmail.com",
+            "homepage": "https://github.com/deba12",
             "role": "Developer"
         }
     ],
@@ -29,12 +35,12 @@
     },
     "autoload": {
         "psr-4": {
-            "PhpSh\\": "src"
+            "Noir\\PhpSh\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "PhpSh\\Tests\\": "tests"
+            "Noir\\PhpSh\\Tests\\": "tests"
         }
     },
     "scripts": {
