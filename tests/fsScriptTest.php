@@ -162,4 +162,24 @@ class fsScriptTest extends TestCase{
 
     }
 
+    public function testChmodCommandNoMode()
+    {
+
+        $this->expectException(RuntimeException::class);
+        (new Script())
+            ->chmod('', '/tmp/test')
+            ->generate();
+
+    }
+
+    public function testChmodCommandNoFile()
+    {
+
+        $this->expectException(RuntimeException::class);
+        (new Script())
+            ->chmod(777, '')
+            ->generate();
+
+    }
+
 }

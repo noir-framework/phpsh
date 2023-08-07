@@ -333,6 +333,11 @@ class Script
      */
     public function chmod(int|string $mode, string|array $file, bool $recursive = false) : self
     {
+
+        if(empty($mode)) {
+            throw new RuntimeException('Mode cannot be empty');
+        }
+
         if(empty($file)) {
             throw new RuntimeException('File cannot be empty');
         }
