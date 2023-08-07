@@ -88,6 +88,7 @@ class fsScriptTest extends TestCase{
 
     }
 
+    /** @test */
     public function testChownCommandNoOwner()
     {
 
@@ -98,6 +99,7 @@ class fsScriptTest extends TestCase{
 
     }
 
+    /** @test */
     public function testChownCommandNoFile()
     {
 
