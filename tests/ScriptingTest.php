@@ -273,23 +273,6 @@ class ScriptingTest extends TestCase
 
     }
 
-    /** @test  */
-    public function chdirCommand()
-    {
-
-        $script = (new Script())
-            ->chdir('/home')
-            ->generate();
-
-        $this->assertEquals('cd /home', $script);
-
-        $command = (new Script())
-            ->command('cd', ['/home'])
-            ->generate();
-
-        $this->assertEquals($command, $script);
-
-    }
 
     /** @test */
     public function testSleepCommand()

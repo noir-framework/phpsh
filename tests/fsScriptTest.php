@@ -89,7 +89,7 @@ class fsScriptTest extends TestCase{
     }
 
     /** @test */
-    public function testChownCommandNoOwner()
+    public function testChownCommandNoOwner(): void
     {
 
         $this->expectException(RuntimeException::class);
@@ -100,7 +100,7 @@ class fsScriptTest extends TestCase{
     }
 
     /** @test */
-    public function testChownCommandNoFile()
+    public function testChownCommandNoFile(): void
     {
 
         $this->expectException(RuntimeException::class);
@@ -165,7 +165,7 @@ class fsScriptTest extends TestCase{
     }
 
     /** @test */
-    public function testChmodCommandNoMode()
+    public function testChmodCommandNoMode(): void
     {
 
         $this->expectException(RuntimeException::class);
@@ -176,7 +176,7 @@ class fsScriptTest extends TestCase{
     }
 
     /** @test */
-    public function testChmodCommandNoFile()
+    public function testChmodCommandNoFile(): void
     {
 
         $this->expectException(RuntimeException::class);
@@ -217,12 +217,41 @@ class fsScriptTest extends TestCase{
     }
 
     /** @test */
-    public function testMkdirCommandNoDir()
+    public function testMkdirCommandNoDir(): void
     {
 
         $this->expectException(RuntimeException::class);
         (new Script())
             ->mkdir('')
+            ->generate();
+
+    }
+
+    /** @test  */
+    public function chdirCommand() : void
+    {
+
+        $script = (new Script())
+            ->chdir('/home')
+            ->generate();
+
+        $this->assertEquals('cd /home', $script);
+
+        $command = (new Script())
+            ->command('cd', ['/home'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+    }
+
+    /** @test */
+    public function chdirCommandNoDir(): void
+    {
+
+        $this->expectException(RuntimeException::class);
+        (new Script())
+            ->chdir('')
             ->generate();
 
     }
