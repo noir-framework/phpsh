@@ -291,36 +291,6 @@ class ScriptingTest extends TestCase
 
     }
 
-    /** @test  */
-    public function mkdirCommand(): void
-    {
-
-            $script = (new Script())
-                ->mkdir('/home/home')
-                ->generate();
-
-            $this->assertEquals('mkdir /home/home', $script);
-
-            $command = (new Script())
-                ->command('mkdir', ['/home/home'])
-                ->generate();
-
-            $this->assertEquals($command, $script);
-
-            $script = (new Script())
-                ->mkdir('/home/home', true)
-                ->generate();
-
-            $this->assertEquals('mkdir -p /home/home', $script);
-
-            $command = (new Script())
-                ->command('mkdir', ['-p', '/home/home'])
-                ->generate();
-
-            $this->assertEquals($command, $script);
-
-    }
-
     /** @test */
     public function testSleepCommand()
     {

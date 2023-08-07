@@ -162,6 +162,7 @@ class fsScriptTest extends TestCase{
 
     }
 
+    /** @test */
     public function testChmodCommandNoMode()
     {
 
@@ -172,12 +173,54 @@ class fsScriptTest extends TestCase{
 
     }
 
+    /** @test */
     public function testChmodCommandNoFile()
     {
 
         $this->expectException(RuntimeException::class);
         (new Script())
             ->chmod(777, '')
+            ->generate();
+
+    }
+
+    /** @test  */
+    public function mkdirCommand(): void
+    {
+
+        $script = (new Script())
+            ->mkdir('/home/home')
+            ->generate();
+
+        $this->assertEquals('mkdir /home/home', $script);
+
+        $command = (new Script())
+            ->command('mkdir', ['/home/home'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        $script = (new Script())
+            ->mkdir('/home/home', true)
+            ->generate();
+
+        $this->assertEquals('mkdir -p /home/home', $script);
+
+        $command = (new Script())
+            ->command('mkdir', ['-p', '/home/home'])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+    }
+
+    /** @test */
+    public function testMkdirCommandNoDir()
+    {
+
+        $this->expectException(RuntimeException::class);
+        (new Script())
+            ->mkdir('')
             ->generate();
 
     }
