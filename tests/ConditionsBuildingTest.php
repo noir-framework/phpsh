@@ -61,4 +61,12 @@ class ConditionsBuildingTest extends TestCase
         $this->assertEquals('-e path', Condition::create()->pathExists('path')->generate());
         $this->assertEquals('-d path', Condition::create()->directoryExists('path')->generate());
     }
+
+    public function testIssetForDollarSign(): void
+    {
+
+        $this->assertEquals('-z ${i+x}', Condition::create()->isset('$i')->generate());
+
+    }
+
 }
