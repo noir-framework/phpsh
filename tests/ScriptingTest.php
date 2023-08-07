@@ -525,7 +525,7 @@ class ScriptingTest extends TestCase
 
         $this->expectException(RuntimeException::class);
         (new Script())
-            ->sleep('test')
+            ->sleep(10)
             ->shebang()
             ->generate();
 
