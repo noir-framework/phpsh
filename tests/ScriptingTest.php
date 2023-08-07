@@ -590,6 +590,12 @@ class ScriptingTest extends TestCase
 
         }
 
+        $this->expectException(RuntimeException::class);
+        (new Script())
+            ->echo('test')
+            ->redirect($fd, 'unknown', '/tmp/test')
+            ->generate();
+
     }
 
 }
