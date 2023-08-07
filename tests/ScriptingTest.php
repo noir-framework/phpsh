@@ -559,4 +559,27 @@ class ScriptingTest extends TestCase
 
     }
 
+    public function testCommand(): void
+    {
+
+        $script = (new Script())
+            ->command('echo', ['test'], true)
+            ->generate();
+
+        $this->assertEquals('echo \'test\'', $script);
+
+        $script = (new Script())
+            ->command('echo', ['test'])
+            ->generate();
+
+        $this->assertEquals('echo test', $script);
+
+        $script = (new Script())
+            ->command('', ['echo', 'test', '|', 'test'])
+            ->generate();
+
+        $this->assertEquals('echo test | test', $script);
+
+    }
+
 }
