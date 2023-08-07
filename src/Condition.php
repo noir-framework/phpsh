@@ -248,7 +248,7 @@ class Condition
      */
     protected function safeVariable(string $variable) : string
     {
-        if ($variable[0] !== '$') {
+        if (!str_starts_with($variable, '$')) {
             return '$'. $variable;
         }
 
@@ -262,8 +262,8 @@ class Condition
      */
     protected function removeDollarSign(string $variable) : string
     {
-        if ($variable[0] === '$') {
-            return substr($variable, 1);
+        if (str_starts_with($variable, '$')) {
+            $variable = substr($variable, 1);
         }
 
         return $variable;
