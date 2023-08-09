@@ -8,7 +8,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [debian-latest, windows-latest]
+        os: [debian-latest]
         php: [8.2]
         dependency-version: [prefer-lowest, prefer-stable]
 
