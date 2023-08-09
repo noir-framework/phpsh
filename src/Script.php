@@ -21,7 +21,7 @@ class Script
      */
     public function shebang(string $path = '/bin/sh', string|array $arguments = '') : self
     {
-        if(!empty($this->fragments)) {
+        if(! empty($this->fragments)) {
             throw new RuntimeException('Shebang must be called before everything else');
         }
 
@@ -44,7 +44,7 @@ class Script
     {
         if($expression instanceof Script) {
             $expression = static::backtick($expression->generate());
-        } elseif(!is_int($expression) && !str_starts_with($expression, '`') && !is_numeric($expression)) {
+        } elseif(! is_int($expression) && ! str_starts_with($expression, '`') && ! is_numeric($expression)) {
             $expression = static::doubleQuote($expression);
         }
 
@@ -61,7 +61,8 @@ class Script
     /**
      * @return self
      */
-    public function pipe(): self {
+    public function pipe(): self
+    {
         return $this->put('|');
     }
 
@@ -74,9 +75,10 @@ class Script
     public function redirect(int $fd, string $op, string $dst) : self
     {
         $allowed = ['>', '>>', '<', '<<', '>&', '<&', '>&-', '<&-'];
-        if(!in_array($op, $allowed)) {
+        if(! in_array($op, $allowed)) {
             throw new RuntimeException(sprintf('Invalid redirection operator: %s', $op));
         }
+
         return $this->put(sprintf('%s%s %s', $fd, $op, $dst));
     }
 
@@ -179,6 +181,7 @@ class Script
     public function while(Condition|string $condition, callable $callable) : self
     {
         $condition = (string) $condition;
+
         return $this
             ->line(sprintf('while [ %s ]; do', $condition))
             ->line((string)$this->newNestedScript($callable))
@@ -247,7 +250,7 @@ class Script
         return $this->line(implode(' ', [
             'printf',
             static::doubleQuote($expression),
-            !empty($arguments) ? static::doubleQuote(implode('" "', $arguments)) : '',
+            ! empty($arguments) ? static::doubleQuote(implode('" "', $arguments)) : '',
         ]));
     }
 
@@ -263,6 +266,7 @@ class Script
         $env = (string) $env;
         $this->line($env);
         $this->newline = false;
+
         return $this->command($command, $arguments, $needs_escape);
     }
 
@@ -274,7 +278,7 @@ class Script
      */
     public function command(string $command, array $arguments = [], bool $needs_escape = false) : self
     {
-        if($needs_escape && !empty($arguments)) {
+        if($needs_escape && ! empty($arguments)) {
             $arguments = array_map('escapeshellarg', $arguments);
         }
 
@@ -288,7 +292,7 @@ class Script
 
         return $this->line(trim(implode(' ', [
             $command,
-            implode(' ', $arguments)
+            implode(' ', $arguments),
         ])));
     }
 
@@ -309,6 +313,7 @@ class Script
     public static function backtick(Script|string $expression) : string
     {
         $expression = (string) $expression;
+
         return sprintf('`%s`', $expression);
     }
 
@@ -318,7 +323,7 @@ class Script
      */
     public function sleep(int|string $seconds) : self
     {
-        if(!is_numeric($seconds)) {
+        if(! is_numeric($seconds)) {
             throw new RuntimeException('Seconds must be an integer');
         }
 
@@ -417,7 +422,8 @@ class Script
      * @param bool $force
      * @return self
      */
-    public function rm(string|array $path, bool $recursive = false, bool $force = false): self {
+    public function rm(string|array $path, bool $recursive = false, bool $force = false): self
+    {
         if(empty($path)) {
             throw new RuntimeException('Path cannot be empty');
         }
@@ -441,14 +447,16 @@ class Script
     /**
      * @return self
      */
-    public function and(): self {
+    public function and(): self
+    {
         return $this->put('&&');
     }
 
     /**
      * @return self
      */
-    public function or(): self {
+    public function or(): self
+    {
         return $this->put('||');
     }
 
@@ -456,7 +464,8 @@ class Script
      * @param int $code
      * @return self
      */
-    public function exit(int $code = 0): self {
+    public function exit(int $code = 0): self
+    {
         return $this->line(sprintf('exit %d', $code));
     }
 
@@ -464,14 +473,16 @@ class Script
      * @param string $file
      * @return self
      */
-    public function touch(string $file): self {
+    public function touch(string $file): self
+    {
         return $this->line(sprintf('touch %s', $file));
     }
 
     /**
      * @return self
      */
-    public function semiColon(): self {
+    public function semiColon(): self
+    {
         return $this->put(';');
     }
 
@@ -480,7 +491,8 @@ class Script
      * @param int $signal
      * @return self
      */
-    public function kill(int|array $pid, int $signal = 15): self {
+    public function kill(int|array $pid, int $signal = 15): self
+    {
         if(is_array($pid)) {
             $pid = implode(' ', $pid);
         }
@@ -492,7 +504,8 @@ class Script
      * @param string|null $file
      * @return self
      */
-    public function cat(?string $file = null): self {
+    public function cat(?string $file = null): self
+    {
         return $this->line($file === null ? 'cat' : sprintf('cat %s', $file));
     }
 
@@ -500,7 +513,8 @@ class Script
      * @param string|null $file
      * @return self
      */
-    public function tac(?string $file = null): self {
+    public function tac(?string $file = null): self
+    {
         return $this->line($file === null ? 'tac' : sprintf('tac %s', $file));
     }
 
@@ -574,16 +588,18 @@ class Script
      * @param bool $with_tab
      * @return self
      */
-    public function nextLine(bool $with_tab = true): self {
+    public function nextLine(bool $with_tab = true): self
+    {
         //XXX it's important to be handled in this way!
-        return $with_tab ? $this->put( "\\\\\n\t") : $this->put("\\\\\n");
+        return $with_tab ? $this->put("\\\\\n\t") : $this->put("\\\\\n");
     }
 
     /**
      * Generates the resulting shell script
      * @return string
      */
-    public function generate(): string {
+    public function generate(): string
+    {
         $result = '';
         $length = count($this->fragments);
         for ($i = 0; $i < $length; $i++) {
@@ -646,6 +662,7 @@ class Script
         }
 
         $this->newline = $newline;
+
         return $this;
     }
 
@@ -680,6 +697,7 @@ class Script
         $expression = (string) $expression;
 
         $this->newline = false;
+
         return $this->addFragment($expression, false, $allow_empty_frags);
     }
 

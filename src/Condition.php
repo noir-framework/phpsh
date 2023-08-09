@@ -16,7 +16,7 @@ class Condition
     public static function create(string $expression = '') : self
     {
         $instance = new self();
-        if (!empty($expression)) {
+        if (! empty($expression)) {
             return $instance->addFragment($expression);
         } else {
             return $instance;
@@ -169,7 +169,8 @@ class Condition
      * @param string $path
      * @return self
      */
-    public function writable(string $path): self {
+    public function writable(string $path): self
+    {
         return $this->checkPath('w', $path);
     }
 
@@ -248,7 +249,7 @@ class Condition
      */
     protected function safeVariable(string $variable) : string
     {
-        if (!str_starts_with($variable, '$')) {
+        if (! str_starts_with($variable, '$')) {
             return '$'. $variable;
         }
 
