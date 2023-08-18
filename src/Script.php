@@ -608,6 +608,11 @@ class Script
         return $this->line(sprintf('trap "%s" %s', $script, $signals));
     }
 
+    public function source(string $filename): self
+    {
+        return $this->line(sprintf('source %s', $filename));
+    }
+
     /**
      * @param bool $with_tab
      * @return self
