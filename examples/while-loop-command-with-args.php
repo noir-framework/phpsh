@@ -10,7 +10,8 @@ $script = new Script();
 $script->set('i', 0);
 echo $script
     ->while($lessThan10, function (Script $script) {
-        $script->printf('$i\n');
-        $script->increment('i');
+        $script->printf('$i\n')
+            ->command('ps', [ '-a', "-v"], true)
+            ->increment('i');
     })
     ->generate();
