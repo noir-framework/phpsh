@@ -593,6 +593,22 @@ class Script
     }
 
     /**
+     * @param string|Script $script
+     * @param array $signals
+     * @return self
+     */
+    public function trap(string|Script $script, array $signals): self
+    {
+        if($script instanceof Script) {
+            $script = $script->generate();
+        }
+
+        $signals = implode(' ', $signals);
+
+        return $this->line(sprintf('trap "%s" %s', $script, $signals));
+    }
+
+    /**
      * @param bool $with_tab
      * @return self
      */
