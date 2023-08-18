@@ -263,29 +263,29 @@ class ScriptingTest extends TestCase
     public function testShebang()
     {
 
-            $script = (new Script())
-                ->shebang()
-                ->generate();
+        $script = (new Script())
+            ->shebang()
+            ->generate();
 
-            $this->assertEquals('#!/bin/sh', $script);
+        $this->assertEquals('#!/bin/sh', $script);
 
-            $command = (new Script())
-                ->command('#!/bin/sh')
-                ->generate();
+        $command = (new Script())
+            ->command('#!/bin/sh')
+            ->generate();
 
-            $this->assertEquals($command, $script);
+        $this->assertEquals($command, $script);
 
-            $script = (new Script())
-                ->shebang('/usr/bin/env', ['sh', '-x'])
-                ->generate();
+        $script = (new Script())
+            ->shebang('/usr/bin/env', ['sh', '-x'])
+            ->generate();
 
-            $this->assertEquals('#!/usr/bin/env sh -x', $script);
+        $this->assertEquals('#!/usr/bin/env sh -x', $script);
 
-            $command = (new Script())
-                ->command('#!/usr/bin/env sh -x')
-                ->generate();
+        $command = (new Script())
+            ->command('#!/usr/bin/env sh -x')
+            ->generate();
 
-            $this->assertEquals($command, $script);
+        $this->assertEquals($command, $script);
 
         $this->expectException(RuntimeException::class);
         (new Script())
@@ -331,7 +331,8 @@ class ScriptingTest extends TestCase
 
     }
 
-    public function testRedirect() {
+    public function testRedirect()
+    {
 
         foreach([1, 2] as $fd) {
 
@@ -381,19 +382,20 @@ class ScriptingTest extends TestCase
     }
 
     /** @test */
-    public function testTacCommand(): void {
+    public function testTacCommand(): void
+    {
 
-            $script = (new Script())
-                ->tac('/etc/config')
-                ->generate();
+        $script = (new Script())
+            ->tac('/etc/config')
+            ->generate();
 
-            $this->assertEquals('tac /etc/config', $script);
+        $this->assertEquals('tac /etc/config', $script);
 
-            $command = (new Script())
-                ->command('tac', ['/etc/config'])
-                ->generate();
+        $command = (new Script())
+            ->command('tac', ['/etc/config'])
+            ->generate();
 
-            $this->assertEquals($command, $script);
+        $this->assertEquals($command, $script);
 
     }
 

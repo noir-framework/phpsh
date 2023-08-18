@@ -445,6 +445,14 @@ class Script
     }
 
     /**
+     * @param string $dir
+     * @return self
+     */
+    public function dirname(string $dir): self {
+        return $this->put("dirname $dir", true);
+    }
+
+    /**
      * @return self
      */
     public function and(): self

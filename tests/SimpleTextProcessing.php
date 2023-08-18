@@ -6,7 +6,8 @@ namespace Noir\PhpSh\Tests;
 use Noir\Phpsh\Script;
 use PHPUnit\Framework\TestCase;
 
-class SimpleTextProcessing extends TestCase {
+class SimpleTextProcessing extends TestCase
+{
 
     /** @test */
     public function createCatCommand(): void

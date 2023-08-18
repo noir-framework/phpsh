@@ -3,14 +3,16 @@ declare(strict_types=1);
 
 namespace Noir\PhpSh\Tests;
 
-use Noir\Phpsh\Script;
+use Noir\PhpSh\Script;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
-class fsScriptTest extends TestCase{
+class fsScriptTest extends TestCase
+{
 
     /** @test  */
-    public function chdirTest(): void {
+    public function chdirTest(): void
+    {
 
         $script = (new Script())
             ->chdir('/tmp')
@@ -285,7 +287,7 @@ class fsScriptTest extends TestCase{
         $this->assertEquals($command, $script);
 
         $script = (new Script())
-            ->rm('text.txt' ,true)
+            ->rm('text.txt', true)
             ->generate();
 
         $this->assertEquals('rm -r text.txt', $script);
@@ -310,7 +312,7 @@ class fsScriptTest extends TestCase{
 
         //
         $script = (new Script())
-            ->rm('text.txt' ,true, true)
+            ->rm('text.txt', true, true)
             ->generate();
 
         $this->assertEquals('rm -r -f text.txt', $script);
@@ -343,6 +345,22 @@ class fsScriptTest extends TestCase{
         (new Script())
             ->rm('')
             ->generate();
+
+    }
+
+    /**
+     * @return void
+     */
+    public function testDirname(): void
+    {
+
+        $script = new Script();
+        $script->set('dirname', (new Script())->dirname("/tmp"));
+
+        $this->assertEquals(
+            'dirname=`dirname /tmp`',
+            $script->generate()
+        );
 
     }
 
