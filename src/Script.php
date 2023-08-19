@@ -508,6 +508,8 @@ class Script
 
         if($signal instanceof Signal) {
             $signal = $signal->value;
+        } else {
+            $signal = Signal::from($signal)->value;
         }
 
         return $this->line(sprintf('kill -%s %s', $signal, $pid));
@@ -620,7 +622,7 @@ class Script
                 if($signal instanceof Signal) {
                     $real .= $signal->value . ' ';
                 } else {
-                    $real .= $signal . ' ';
+                    $real .= Signal::from($signal)->value . ' ';
                 }
             }
 
