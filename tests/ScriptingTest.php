@@ -72,7 +72,7 @@ class ScriptingTest extends TestCase
     }
 
     /** @test */
-    public function createSemiColon()
+    public function createSemiColon(): void
     {
 
         $script = (new Script())
@@ -124,7 +124,7 @@ class ScriptingTest extends TestCase
     }
 
     /** @test */
-    public function createExitCommand()
+    public function createExitCommand(): void
     {
 
         $script = (new Script())
@@ -150,7 +150,7 @@ class ScriptingTest extends TestCase
     }
 
     /** @test */
-    public function createAnd()
+    public function createAnd(): void
     {
 
         $script = (new Script())
@@ -178,7 +178,7 @@ class ScriptingTest extends TestCase
     }
 
     /** @test */
-    public function createOr()
+    public function createOr(): void
     {
 
         $script = (new Script())
@@ -206,7 +206,7 @@ class ScriptingTest extends TestCase
     }
 
     /** @test */
-    public function testSleepCommand()
+    public function testSleepCommand(): void
     {
 
         $script = (new Script())
@@ -241,7 +241,7 @@ class ScriptingTest extends TestCase
     }
 
     /** @test */
-    public function testSetAndBackTick()
+    public function testSetAndBackTick(): void
     {
 
         $script = (new Script())
@@ -271,7 +271,7 @@ class ScriptingTest extends TestCase
     }
 
     /** @test */
-    public function testShebang()
+    public function testShebang(): void
     {
 
         $script = (new Script())
@@ -307,7 +307,7 @@ class ScriptingTest extends TestCase
     }
 
     /** @test  */
-    public function testPipe()
+    public function testPipe(): void
     {
 
         $script = (new Script())
@@ -342,7 +342,7 @@ class ScriptingTest extends TestCase
 
     }
 
-    public function testRedirect()
+    public function testRedirect(): void
     {
 
         foreach([1, 2] as $fd) {
