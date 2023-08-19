@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Noir\PhpSh\Tests;
 
+use Noir\PhpSh\Enum\Signal;
 use Noir\PhpSh\Script;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
@@ -31,7 +32,7 @@ class ScriptingTest extends TestCase
     }
 
     /** @test */
-    public function createKillCommand()
+    public function createKillCommand(): void
     {
 
         $script = (new Script())
@@ -54,6 +55,16 @@ class ScriptingTest extends TestCase
 
         $command = (new Script())
             ->command('kill', [-15, 1, 2, 3])
+            ->generate();
+
+        $this->assertEquals($command, $script);
+
+        $script = (new Script())
+            ->kill([1, 2, 3], Signal::SIGINT)
+            ->generate();
+
+        $command = (new Script())
+            ->command('kill', [-2, 1, 2, 3])
             ->generate();
 
         $this->assertEquals($command, $script);

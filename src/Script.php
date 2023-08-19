@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Noir\PhpSh;
 
+use Noir\PhpSh\Enum\Signal;
 use RuntimeException;
 
 class Script
@@ -496,13 +497,17 @@ class Script
 
     /**
      * @param int|array $pid
-     * @param int $signal
+     * @param int|Signal $signal
      * @return self
      */
-    public function kill(int|array $pid, int $signal = 15): self
+    public function kill(int|array $pid, int|Signal $signal = Signal::SIGTERM): self
     {
         if(is_array($pid)) {
             $pid = implode(' ', $pid);
+        }
+
+        if($signal instanceof Signal) {
+            $signal = $signal->value;
         }
 
         return $this->line(sprintf('kill -%s %s', $signal, $pid));
@@ -594,18 +599,34 @@ class Script
 
     /**
      * @param string|Script $script
-     * @param array $signals
+     * @param int|Signal|array|Signal[] $signals
      * @return self
      */
-    public function trap(string|Script $script, array $signals): self
+    public function trap(string|Script $script, int|Signal|array $signals): self
     {
         if($script instanceof Script) {
             $script = $script->generate();
         }
 
-        $signals = implode(' ', $signals);
+        $real = '';
 
-        return $this->line(sprintf('trap "%s" %s', $script, $signals));
+        if($signals instanceof Signal) {
+            $real .= $signals->value;
+        } elseif(is_int($signals)) {
+            $real .= $signals;
+        } else {
+
+            foreach($signals as $signal) {
+                if($signal instanceof Signal) {
+                    $real .= $signal->value . ' ';
+                } else {
+                    $real .= $signal . ' ';
+                }
+            }
+
+        }
+
+        return $this->line(sprintf('trap "%s" %s', $script, trim($real)));
     }
 
     public function source(string $filename): self
