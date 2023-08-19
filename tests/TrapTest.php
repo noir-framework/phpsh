@@ -74,4 +74,30 @@ class TrapTest extends TestCase {
 
     }
 
+    public function testTrapWithScript(): void
+    {
+
+        $script = new Script();
+        $script->trap((new Script())->echo('Hello World'), [9]);
+
+        $this->assertEquals(
+            "trap \"echo -n Hello World\" 9",
+            $script->generate()
+        );
+
+    }
+
+    public function testTrapWithScriptAndRedirect(): void
+    {
+
+        $script = new Script();
+        $script->trap((new Script())->echo('Hello World')->redirect(1, '>', '&2'), 9);
+
+        $this->assertEquals(
+            "trap \"echo -n Hello World 1> &2\" 9",
+            $script->generate()
+        );
+
+    }
+
 }

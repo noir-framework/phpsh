@@ -364,4 +364,17 @@ class fsScriptTest extends TestCase
 
     }
 
+    public function testSource(): void
+    {
+
+        $script = new Script();
+        $script->source('/tmp/test.sh');
+
+        $this->assertEquals(
+            'source /tmp/test.sh',
+            $script->generate()
+        );
+
+    }
+
 }
