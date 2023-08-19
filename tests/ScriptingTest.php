@@ -83,6 +83,7 @@ class ScriptingTest extends TestCase
         $this->assertEquals('echo -n test;', $script);
 
         // Execute it!
+        /** @psalm-suppress ForbiddenCode */
         $this->assertEquals('test', shell_exec($script));
 
         $command = (new Script())
@@ -170,6 +171,7 @@ class ScriptingTest extends TestCase
         $this->assertEquals($command, $script);
 
         // Execute it!
+        /** @psalm-suppress ForbiddenCode */
         $this->assertEquals('testtest2', shell_exec($script));
 
         $this->expectException(RuntimeException::class);
@@ -198,6 +200,7 @@ class ScriptingTest extends TestCase
         $this->assertEquals($command, $script);
 
         // Execute it!
+        /** @psalm-suppress ForbiddenCode */
         $this->assertEquals('test', shell_exec($script));
 
         $this->expectException(RuntimeException::class);
@@ -317,6 +320,7 @@ class ScriptingTest extends TestCase
             ->generate();
 
         $this->assertEquals('echo -n test | cat', $script);
+        /** @psalm-suppress ForbiddenCode */
         $this->assertEquals('test', shell_exec($script));
 
         $command = (new Script())
@@ -326,6 +330,7 @@ class ScriptingTest extends TestCase
             ->generate();
 
         $this->assertEquals($command, $script);
+        /** @psalm-suppress ForbiddenCode */
         $this->assertEquals('test', shell_exec($command));
 
         $command = (new Script())
@@ -333,6 +338,7 @@ class ScriptingTest extends TestCase
             ->generate();
 
         $this->assertEquals($command, $script);
+        /** @psalm-suppress ForbiddenCode */
         $this->assertEquals('test', shell_exec($command));
 
         $this->expectException(RuntimeException::class);
