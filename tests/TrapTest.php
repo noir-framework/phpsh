@@ -6,6 +6,7 @@ namespace Noir\PhpSh\Tests;
 use Noir\PhpSh\Enum\Signal;
 use Noir\PhpSh\Script;
 use PHPUnit\Framework\TestCase;
+use ValueError;
 
 class TrapTest extends TestCase {
 
@@ -59,6 +60,17 @@ class TrapTest extends TestCase {
             "trap \"echo 'Hello World'\" 15 9",
             $script->generate()
         );
+
+    }
+
+    public function testTrapWithInvalidSignal(): void
+    {
+
+        /** @noinspection PhpMultipleClassDeclarationsInspection */
+        $this->expectException(ValueError::class);
+
+        $script = new Script();
+        $script->trap('echo \'Hello World\'', [Signal::SIGTERM, 999]);
 
     }
 
