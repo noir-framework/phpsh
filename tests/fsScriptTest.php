@@ -355,7 +355,7 @@ class fsScriptTest extends TestCase
     {
 
         $script = new Script();
-        $script->set('dirname', (new Script())->dirname("/tmp"));
+        $script->let('dirname', (new Script())->dirname("/tmp"));
 
         $this->assertEquals(
             'dirname=`dirname /tmp`',

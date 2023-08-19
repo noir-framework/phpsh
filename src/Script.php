@@ -41,7 +41,7 @@ class Script
      * @param bool $with_export
      * @return self
      */
-    public function set(string $variable, Script|string|int $expression, bool $with_export = false) : self
+    public function let(string $variable, Script|string|int $expression, bool $with_export = false) : self
     {
         if($expression instanceof Script) {
             $expression = static::backtick($expression->generate());

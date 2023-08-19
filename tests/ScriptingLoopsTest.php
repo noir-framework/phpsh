@@ -15,7 +15,7 @@ class ScriptingLoopsTest extends TestCase
         $condition = Condition::create('$i')->lessThan(10);
 
         $sh = (new Script())
-            ->set('i', 0)
+            ->let('i', 0)
             ->while($condition, function (Script $script) {
                 $script->echo('$i');
                 $script->increment('i');
@@ -30,7 +30,7 @@ class ScriptingLoopsTest extends TestCase
         $condition = Condition::create('$i')->lessThan(10);
 
         $sh = (new Script())
-            ->set('i', 0)
+            ->let('i', 0)
             ->while($condition, function (Script $script) {
                 $script->increment('i');
                 $script

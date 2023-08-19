@@ -14,7 +14,7 @@ class ScriptingConditionsTest extends TestCase
     {
         $condition = Condition::create();
         $sh = (new Script())
-            ->set('i', 10)
+            ->let('i', 10)
             ->if($condition->is('i')->equals(10), function (Script $script) {
                 $script->printf('OK');
             })
@@ -27,7 +27,7 @@ class ScriptingConditionsTest extends TestCase
     public function it_can_build_an_if_statement_with_multiple_conditions()
     {
         $sh = (new Script())
-            ->set('i', 5)
+            ->let('i', 5)
             ->if(Condition::create('$i')->lessThan(10)->and()->is('i')->greaterThan('1'), function (Script $script) {
                 $script->printf("OK");
             })
@@ -40,7 +40,7 @@ class ScriptingConditionsTest extends TestCase
     public function it_can_build_an_if_else_statement()
     {
         $sh = (new Script())
-            ->set('i', 15)
+            ->let('i', 15)
             ->if(Condition::create('$i')->lessThan(10), function (Script $script) {
                 $script->printf("NOT_OK");
             })->else(function (Script $script) {
@@ -54,7 +54,7 @@ class ScriptingConditionsTest extends TestCase
     public function it_can_build_an_if_elseif_else_statement()
     {
         $sh = (new Script())
-            ->set('i', 25)
+            ->let('i', 25)
             ->if(Condition::create('$i')->lessThan(10), function (Script $script) {
                 $script->printf('NOT_OK');
             })->elseif(Condition::create('$i')->greaterThan(20), function (Script $script) {
@@ -70,7 +70,7 @@ class ScriptingConditionsTest extends TestCase
     public function it_can_build_switch_statement()
     {
         $sh = (new Script())
-            ->set('i', 1)
+            ->let('i', 1)
             ->decrement('i')
             ->switch('i', function (Script $script) {
                 $script

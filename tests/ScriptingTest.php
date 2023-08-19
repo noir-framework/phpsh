@@ -248,7 +248,7 @@ class ScriptingTest extends TestCase
     {
 
         $script = (new Script())
-            ->set('CONFIG', (new Script())->backtick('cat /etc/config'))
+            ->let('CONFIG', (new Script())->backtick('cat /etc/config'))
             ->generate();
 
         $this->assertEquals('CONFIG=`cat /etc/config`', $script);
@@ -260,7 +260,7 @@ class ScriptingTest extends TestCase
         $this->assertEquals($command, $script);
 
         $script = (new Script())
-            ->set('CONFIG', (new Script())->backtick('cat /etc/config'), true)
+            ->let('CONFIG', (new Script())->backtick('cat /etc/config'), true)
             ->generate();
 
         $this->assertEquals('export CONFIG=`cat /etc/config`', $script);
@@ -606,7 +606,7 @@ class ScriptingTest extends TestCase
     public function testCommandWithEnv(): void
     {
 
-        $env = (new Script())->set('CONFIG', 'test');
+        $env = (new Script())->let('CONFIG', 'test');
 
         $script = (new Script())
             ->commandWithEnv($env, 'echo', ['test'], true)
@@ -633,25 +633,25 @@ class ScriptingTest extends TestCase
     {
 
         $script = (new Script())
-            ->set('CONFIG', 'test')
+            ->let('CONFIG', 'test')
             ->generate();
 
         $this->assertEquals('CONFIG="test"', $script);
 
         $script = (new Script())
-            ->set('CONFIG', 'test', true)
+            ->let('CONFIG', 'test', true)
             ->generate();
 
         $this->assertEquals('export CONFIG="test"', $script);
 
         $script = (new Script())
-            ->set('CONFIG', (new Script())->command('echo', ['test']))
+            ->let('CONFIG', (new Script())->command('echo', ['test']))
             ->generate();
 
         $this->assertEquals('CONFIG=`echo test`', $script);
 
         $script = (new Script())
-            ->set('CONFIG', (new Script())->echo('test')->pipe()->command('grep', ['-v', 'test']))
+            ->let('CONFIG', (new Script())->echo('test')->pipe()->command('grep', ['-v', 'test']))
             ->generate();
 
         $this->assertEquals('CONFIG=`echo -n test | grep -v test`', $script);
