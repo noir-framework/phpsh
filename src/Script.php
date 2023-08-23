@@ -190,6 +190,21 @@ class Script
     }
 
     /**
+     * @param Condition|string $condition
+     * @param callable $callable
+     * @return self
+     */
+    public function until(Condition|string $condition, callable $callable) : self
+    {
+        $condition = (string) $condition;
+
+        return $this
+            ->line(sprintf('until [ %s ]; do', $condition))
+            ->line((string)$this->newNestedScript($callable))
+            ->line('done');
+    }
+
+    /**
      * @param string $expression
      * @return self
      */
