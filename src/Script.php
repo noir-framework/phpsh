@@ -43,9 +43,9 @@ class Script
      */
     public function let(string $variable, Script|string|int $expression, bool $with_export = false) : self
     {
-        if($expression instanceof Script) {
+        if($expression instanceof self) {
             $expression = static::backtick($expression->generate());
-        } elseif(! is_int($expression) && ! str_starts_with($expression, '`') && ! is_numeric($expression)) {
+        } elseif(! is_int($expression) && ! is_numeric($expression) && ! str_starts_with($expression, '`')) {
             $expression = static::doubleQuote($expression);
         }
 
@@ -496,11 +496,11 @@ class Script
     }
 
     /**
-     * @param int|array $pid
+     * @param int|string|array $pid
      * @param int|Signal $signal
      * @return self
      */
-    public function kill(int|array $pid, int|Signal $signal = Signal::SIGTERM): self
+    public function kill(int|string|array $pid, int|Signal $signal = Signal::SIGTERM): self
     {
         if(is_array($pid)) {
             $pid = implode(' ', $pid);
@@ -535,11 +535,12 @@ class Script
 
     /**
      * @param string|null $file
-     * @param int|null $amount
+     * @param int|string|null $amount
      * @param bool $chars_mode
      * @return self
+     * @noinspection DuplicatedCode
      */
-    public function tail(?string $file = null, ?int $amount = null, bool $chars_mode = false): self
+    public function tail(?string $file = null, int|string|null $amount = null, bool $chars_mode = false): self
     {
 
         if($chars_mode) {
@@ -547,13 +548,11 @@ class Script
                 throw new RuntimeException('Chars mode requires amount of chars');
             }
             $op = ' -c';
+        } else if(empty($amount)) {
+            $op = '';
+            $amount = '';
         } else {
-            if($amount === null) {
-                $op = '';
-                $amount = '';
-            } else {
-                $op = ' -n';
-            }
+            $op = ' -n';
         }
 
         if(empty($file) || $file === '-') {
@@ -568,11 +567,12 @@ class Script
 
     /**
      * @param string|null $file
-     * @param int|null $amount
+     * @param int|string|null $amount
      * @param bool $chars_mode
      * @return self
+     * @noinspection DuplicatedCode
      */
-    public function head(?string $file = null, ?int $amount = null, bool $chars_mode = false): self
+    public function head(?string $file = null, int|string|null $amount = null, bool $chars_mode = false): self
     {
 
         if($chars_mode) {
@@ -580,13 +580,11 @@ class Script
                 throw new RuntimeException('Chars mode requires amount of chars');
             }
             $op = ' -c';
+        } else if(empty($amount)) {
+            $op = '';
+            $amount = '';
         } else {
-            if($amount === null) {
-                $op = '';
-                $amount = '';
-            } else {
-                $op = ' -n';
-            }
+            $op = ' -n';
         }
 
         if(empty($file) || $file === '-') {
@@ -606,7 +604,7 @@ class Script
      */
     public function trap(string|Script $script, int|Signal|array $signals): self
     {
-        if($script instanceof Script) {
+        if($script instanceof self) {
             $script = $script->generate();
         }
 
@@ -676,9 +674,9 @@ class Script
     {
         $result = '';
         $length = count($this->fragments);
-        for ($i = 0; $i < $length; $i++) {
+        foreach ($this->fragments as $i => $iValue) {
             $result .= str_pad('', $this->nested, "\t");
-            $result .= $this->fragments[$i];
+            $result .= $iValue;
             if ($i < $length - 1) {
                 $result .= PHP_EOL;
             }
@@ -718,15 +716,11 @@ class Script
                     $frag_no = 0;
                 }
 
-            } else {
-
-                if(empty($this->fragments[$frag_no])) {
-                    throw new RuntimeException('Cannot append fragment to current line, this line is empty');
-                }
-
+            } else if(empty($this->fragments[$frag_no])) {
+                throw new RuntimeException('Cannot append fragment to current line, this line is empty');
             }
 
-            if($this->fragments[$frag_no] == '' || str_starts_with($line, ';') || str_starts_with($this->fragments[$frag_no], '\\') || preg_match('/\s+$/', $this->fragments[$frag_no])) {
+            if(empty($this->fragments[$frag_no]) || str_starts_with($line, ';') || str_starts_with($this->fragments[$frag_no], '\\') || preg_match('/\s+$/', $this->fragments[$frag_no])) {
                 $space = '';
             } else {
                 $space = ' ';
@@ -747,7 +741,7 @@ class Script
      */
     protected function newNestedScript(callable $callable) : Script
     {
-        $script = new Script();
+        $script = new self();
         $script->nested = $this->nested + 1;
         call_user_func_array($callable, [&$script]);
 
