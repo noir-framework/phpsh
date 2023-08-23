@@ -637,6 +637,28 @@ class Script
     }
 
     /**
+     * @param string $option
+     * @return self
+     */
+    public function set(string $option): self
+    {
+        return $this->line(sprintf('set -%s', $option));
+    }
+
+    /**
+     * @param string $variable
+     * @return self
+     */
+    public function unset(string $variable): self
+    {
+        if (str_starts_with($variable, '$')) {
+            $variable = substr($variable, 1);
+        }
+
+        return $this->line(sprintf('unset %s', $variable));
+    }
+
+    /**
      * @param bool $with_tab
      * @return self
      */
