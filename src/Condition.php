@@ -18,9 +18,9 @@ class Condition
         $instance = new self();
         if (! empty($expression)) {
             return $instance->addFragment($expression);
-        } else {
-            return $instance;
         }
+
+        return $instance;
     }
 
     /**
