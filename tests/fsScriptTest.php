@@ -423,4 +423,66 @@ class fsScriptTest extends TestCase
 
     }
 
+    public function testCp(): void
+    {
+
+        $script = new Script();
+        $script->cp('/tmp/test', '/tmp/test2');
+
+        $this->assertEquals(
+            'cp /tmp/test /tmp/test2',
+            $script->generate()
+        );
+
+        $script = new Script();
+        $script->cp('/tmp/test', '/tmp/test2', '-a');
+
+        $this->assertEquals(
+            'cp -a /tmp/test /tmp/test2',
+            $script->generate()
+        );
+
+        $script = new Script();
+        $script->cp('/tmp/test', '/tmp/test2', ['-a']);
+
+        $this->assertEquals(
+            'cp -a /tmp/test /tmp/test2',
+            $script->generate()
+        );
+
+        $script = new Script();
+        $script->cp(['/tmp/test', '/tmp/test1'], '/tmp/test2');
+
+        $this->assertEquals(
+            'cp /tmp/test /tmp/test1 /tmp/test2',
+            $script->generate()
+        );
+
+        $script = new Script();
+        $script->cp(['/tmp/test', '/tmp/test1'], '/tmp/test2', '-a');
+
+        $this->assertEquals(
+            'cp -a /tmp/test /tmp/test1 /tmp/test2',
+            $script->generate()
+        );
+
+        $script = new Script();
+        $script->cp(['/tmp/test', '/tmp/test1'], '/tmp/test2', ['-a']);
+
+        $this->assertEquals(
+            'cp -a /tmp/test /tmp/test1 /tmp/test2',
+            $script->generate()
+        );
+
+        $this->expectException(RuntimeException::class);
+        $script = new Script();
+        $script->cp(['/tmp/test', '/tmp/test1'], '/tmp/test2', ['--interactive']);
+
+        $this->assertEquals(
+            'cp -a /tmp/test /tmp/test1 /tmp/test2',
+            $script->generate()
+        );
+
+    }
+
 }
