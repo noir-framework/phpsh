@@ -461,18 +461,26 @@ class Script
     }
 
     /**
-     * @param string $src
+     * @param string|array $src
      * @param string $dst
      * @param string|array $opts
      * @return self
      */
-    public function mv(string $src, string $dst, string|array $opts = ''): self {
+    public function mv(string|array $src, string $dst, string|array $opts = ''): self {
 
         if(is_array($opts)) {
-            if(in_array('-i', $opts, true)) {
+            if(in_array('-i', $opts, true) || in_array('--interactive', $opts, true)) {
                 throw new RuntimeException('Interactive mode is not supported');
             }
             $opts = implode(' ', $opts);
+        }
+
+        if(preg_match('/(-i\s+)|(--interactive\s+)/ui', $opts)) {
+            throw new RuntimeException('Interactive mode is not supported');
+        }
+
+        if(is_array($src)) {
+            $src = implode(' ', $src);
         }
 
         if(!empty($opts)) {
