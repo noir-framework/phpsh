@@ -377,4 +377,50 @@ class fsScriptTest extends TestCase
 
     }
 
+    public function testMv(): void
+    {
+
+        $script = new Script();
+        $script->mv('/tmp/test', '/tmp/test2');
+
+        $this->assertEquals(
+            'mv /tmp/test /tmp/test2',
+            $script->generate()
+        );
+
+        $script = new Script();
+        $script->mv('/tmp/test', '/tmp/test2', '-f');
+
+        $this->assertEquals(
+            'mv -f /tmp/test /tmp/test2',
+            $script->generate()
+        );
+
+        $script = new Script();
+        $script->mv('/tmp/test', '/tmp/test2', ['-f']);
+
+        $this->assertEquals(
+            'mv -f /tmp/test /tmp/test2',
+            $script->generate()
+        );
+
+        $script = new Script();
+        $script->mv('/tmp/test', '/tmp/test2', ['-f', '-t /tmp/1']);
+
+        $this->assertEquals(
+            'mv -f -t /tmp/1 /tmp/test /tmp/test2',
+            $script->generate()
+        );
+
+        $this->expectException(RuntimeException::class);
+        $script = new Script();
+        $script->mv('/tmp/test', '/tmp/test2', ['-i']);
+
+        $this->assertEquals(
+            'mv -i /tmp/1 /tmp/test /tmp/test2',
+            $script->generate()
+        );
+
+    }
+
 }

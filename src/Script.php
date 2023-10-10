@@ -461,6 +461,29 @@ class Script
     }
 
     /**
+     * @param string $src
+     * @param string $dst
+     * @param string|array $opts
+     * @return self
+     */
+    public function mv(string $src, string $dst, string|array $opts = ''): self {
+
+        if(is_array($opts)) {
+            if(in_array('-i', $opts, true)) {
+                throw new RuntimeException('Interactive mode is not supported');
+            }
+            $opts = implode(' ', $opts);
+        }
+
+        if(!empty($opts)) {
+            $opts .= ' ';
+        }
+
+        return $this->line(sprintf('mv %s%s %s', $opts, $src, $dst));
+
+    }
+
+    /**
      * @param string $dir
      * @return self
      */
