@@ -27,7 +27,7 @@ class fsScriptTest extends TestCase
         $this->assertEquals($command, $script);
 
         $this->expectException(RuntimeException::class);
-
+        /** @noinspection UnusedFunctionResultInspection */
         (new Script())
             ->chdir('')
             ->generate();
@@ -35,7 +35,6 @@ class fsScriptTest extends TestCase
 
     }
 
-    /** @test */
     public function testChownCommand(): void
     {
 
@@ -90,22 +89,22 @@ class fsScriptTest extends TestCase
 
     }
 
-    /** @test */
     public function testChownCommandNoOwner(): void
     {
 
         $this->expectException(RuntimeException::class);
+        /** @noinspection UnusedFunctionResultInspection */
         (new Script())
             ->chown('', '/tmp/test')
             ->generate();
 
     }
 
-    /** @test */
     public function testChownCommandNoFile(): void
     {
 
         $this->expectException(RuntimeException::class);
+        /** @noinspection UnusedFunctionResultInspection */
         (new Script())
             ->chown('root', '')
             ->generate();
@@ -166,22 +165,22 @@ class fsScriptTest extends TestCase
 
     }
 
-    /** @test */
     public function testChmodCommandNoMode(): void
     {
 
         $this->expectException(RuntimeException::class);
+        /** @noinspection UnusedFunctionResultInspection */
         (new Script())
             ->chmod('', '/tmp/test')
             ->generate();
 
     }
 
-    /** @test */
     public function testChmodCommandNoFile(): void
     {
 
         $this->expectException(RuntimeException::class);
+        /** @noinspection UnusedFunctionResultInspection */
         (new Script())
             ->chmod(777, '')
             ->generate();
@@ -218,11 +217,11 @@ class fsScriptTest extends TestCase
 
     }
 
-    /** @test */
     public function testMkdirCommandNoDir(): void
     {
 
         $this->expectException(RuntimeException::class);
+        /** @noinspection UnusedFunctionResultInspection */
         (new Script())
             ->mkdir('')
             ->generate();
@@ -252,6 +251,7 @@ class fsScriptTest extends TestCase
     {
 
         $this->expectException(RuntimeException::class);
+        /** @noinspection UnusedFunctionResultInspection */
         (new Script())
             ->chdir('')
             ->generate();
@@ -337,11 +337,11 @@ class fsScriptTest extends TestCase
 
     }
 
-    /** @test */
     public function testRmCommandNoFile(): void
     {
 
         $this->expectException(RuntimeException::class);
+        /** @noinspection UnusedFunctionResultInspection */
         (new Script())
             ->rm('')
             ->generate();
