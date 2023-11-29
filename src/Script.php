@@ -86,7 +86,7 @@ class Script
     /**
      * Construct an if condition
      * @param string|Condition $condition
-     * @param callable $callable A callable that receives a new Script instance as argument
+     * @param callable $callable callable that receives a new Script instance as argument
      * @param bool $double
      * @param string $tag
      * @return self
@@ -155,6 +155,7 @@ class Script
      */
     public function switch(string $variable, callable $callable) : self
     {
+        /** @noinspection SpellCheckingInspection */
         return $this
             ->line(sprintf('case $%s in', $variable))
             ->line((string)$this->newNestedScript($callable))
@@ -295,6 +296,7 @@ class Script
     public function command(string $command, array $arguments = [], bool $needs_escape = false) : self
     {
         if($needs_escape && ! empty($arguments)) {
+            /** @noinspection SpellCheckingInspection */
             $arguments = array_map('escapeshellarg', $arguments);
         }
 
