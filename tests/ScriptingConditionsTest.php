@@ -84,4 +84,22 @@ class ScriptingConditionsTest extends TestCase
 
         $this->assertEquals('OK', shell_exec((string)$sh));
     }
+
+
+    public function test_not_condition(): void
+    {
+
+        $sh = (new Script())
+            ->if(Condition::create()->not()->fileExists("/tmp/test"), function (Script $script) {
+                $script->echo('OK');
+            })->fi()
+            ->generate();
+
+        $this->assertEquals("if [  ! -f /tmp/test  ] ; then
+	echo -n OK
+fi", $sh);
+
+
+    }
+
 }

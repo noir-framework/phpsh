@@ -24,6 +24,14 @@ class Condition
     }
 
     /**
+     * @return self
+     */
+    public function not() : self
+    {
+        return $this->addFragment('!');
+    }
+
+    /**
      * @param string $variable
      * @return self
      */
