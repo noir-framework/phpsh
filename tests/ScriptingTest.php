@@ -457,6 +457,7 @@ class ScriptingTest extends TestCase
         $this->assertEquals($command, $script);
 
         $this->expectException(RuntimeException::class);
+        /** @noinspection UnusedFunctionResultInspection */
         (new Script())
             ->tail('/test', null, true)
             ->generate();

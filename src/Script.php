@@ -643,6 +643,19 @@ class Script
     }
 
     /**
+     * @param string $file
+     * @param bool $append
+     * @return self
+     */
+    public function tee(string $file, bool $append = false): self
+    {
+        if($append) {
+            $file = '-a ' . $file;
+        }
+        return $this->line(sprintf('tee %s', $file));
+    }
+
+    /**
      * @param string|null $file
      * @param int|string|null $amount
      * @param bool $chars_mode
