@@ -35,6 +35,13 @@ class Script
     }
 
     /**
+     * @return self
+     */
+    public function newLine(): self {
+        return $this->put("\n");
+    }
+
+    /**
      * Set the value of a variable
      * @param string $variable
      * @param Script|string|int $expression
@@ -62,8 +69,36 @@ class Script
     /**
      * @return self
      */
+    public function and(): self
+    {
+        $last = trim($this->getLastFragment());
+        if(str_ends_with($last, ';')) {
+            $this->setLastFragment(substr($last, 0, -1));
+        }
+        return $this->put('&&');
+    }
+
+    /**
+     * @return self
+     */
+    public function or(): self
+    {
+        $last = trim($this->getLastFragment());
+        if(str_ends_with($last, ';')) {
+            $this->setLastFragment(substr($last, 0, -1));
+        }
+        return $this->put('||');
+    }
+
+    /**
+     * @return self
+     */
     public function pipe(): self
     {
+        $last = trim($this->getLastFragment());
+        if(str_ends_with($last, ';')) {
+            $this->setLastFragment(substr($last, 0, -1));
+        }
         return $this->put('|');
     }
 
@@ -103,7 +138,8 @@ class Script
                 $double ? ' ]]' : ' ]',
                 '; then',
             ]))
-            ->line($script);
+            ->line($script)
+            ->fi();
     }
 
     /**
@@ -533,28 +569,12 @@ class Script
     }
 
     /**
-     * @return self
-     */
-    public function and(): self
-    {
-        return $this->put('&&');
-    }
-
-    /**
-     * @return self
-     */
-    public function or(): self
-    {
-        return $this->put('||');
-    }
-
-    /**
      * @param int $code
      * @return self
      */
     public function exit(int $code = 0): self
     {
-        return $this->line(sprintf('exit %d', $code));
+        return $this->line(sprintf('exit %d', $code))->semiColon();
     }
 
     /**
@@ -777,6 +797,15 @@ class Script
         return $result;
     }
 
+    public function put(Script|string $expression, bool $allow_empty_frags = false) : self
+    {
+        $expression = (string) $expression;
+
+        $this->newline = false;
+
+        return $this->addFragment($expression, false, $allow_empty_frags);
+    }
+
     /**
      * @return string
      */
@@ -852,13 +881,31 @@ class Script
         return $this->addFragment($expression, true);
     }
 
-    public function put(Script|string $expression, bool $allow_empty_frags = false) : self
+    /**
+     * @return string
+     */
+    protected function getLastFragment() : string
     {
-        $expression = (string) $expression;
+        return $this->fragments[count($this->fragments) - 1];
+    }
 
-        $this->newline = false;
+    /**
+     * @return $this
+     */
+    protected function removeLastFragment() : self
+    {
+        array_pop($this->fragments);
+        return $this;
+    }
 
-        return $this->addFragment($expression, false, $allow_empty_frags);
+    /**
+     * @param string $fragment
+     * @return $this
+     */
+    protected function setLastFragment(string $fragment) : self
+    {
+        $this->fragments[count($this->fragments) - 1] = $fragment;
+        return $this;
     }
 
 }

@@ -659,4 +659,16 @@ class ScriptingTest extends TestCase
 
     }
 
+    public function testNewline(): void {
+
+        $script = (new Script())
+            ->command('/tmp/test1')
+            ->newLine()
+            ->command('/tmp/test2')
+            ->generate();
+
+        $this->assertEquals("/tmp/test1 \n/tmp/test2", $script);
+
+    }
+
 }
