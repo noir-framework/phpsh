@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 class ConditionsBuildingTest extends TestCase
 {
     /** @test */
-    public function it_can_create_comparison_operator_conditions()
+    public function it_can_create_comparison_operator_conditions(): void
     {
         $this->assertEquals('$i -eq 10', Condition::create('$i')->equals(10)->generate());
         $this->assertEquals('$i -ne 10', Condition::create('$i')->notEquals(10)->generate());
@@ -20,7 +20,7 @@ class ConditionsBuildingTest extends TestCase
     }
 
     /** @test */
-    public function it_can_create_logical_operator_conditions()
+    public function it_can_create_logical_operator_conditions(): void
     {
         $this->assertEquals(
             '$i -lt 10 -a $i -gt 1',
@@ -43,7 +43,7 @@ class ConditionsBuildingTest extends TestCase
     }
 
     /** @test */
-    public function it_can_create_variable_checks()
+    public function it_can_create_variable_checks(): void
     {
         $this->assertEquals('-z ${i+x}', Condition::create()->isset('i')->generate());
         $this->assertEquals('-z $i', Condition::create()->isEmpty('i')->generate());
@@ -51,7 +51,7 @@ class ConditionsBuildingTest extends TestCase
     }
 
     /** @test */
-    public function it_can_create_file_and_directory_checks()
+    public function it_can_create_file_and_directory_checks(): void
     {
         $this->assertEquals('-f path', Condition::create()->isFile('path')->generate());
         $this->assertEquals('-x path', Condition::create()->executable('path')->generate());

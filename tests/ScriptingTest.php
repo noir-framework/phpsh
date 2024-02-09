@@ -101,6 +101,7 @@ class ScriptingTest extends TestCase
         $this->assertEquals($command, $script);
 
         $this->expectException(RuntimeException::class);
+        /** @noinspection UnusedFunctionResultInspection */
         (new Script())->semiColon()->generate();
 
 
@@ -155,15 +156,15 @@ class ScriptingTest extends TestCase
     {
 
         $script = (new Script())
-            ->echo('test')
+            ->echo('test--')
             ->and()
             ->echo('test2')
             ->generate();
 
-        $this->assertEquals('echo -n test && echo -n test2', $script);
+        $this->assertEquals('echo -n test-- && echo -n test2', $script);
 
         $command = (new Script())
-            ->command('echo', ['-n', 'test'])
+            ->command('echo', ['-n', 'test--'])
             ->and()
             ->command('echo', ['-n', 'test2'])
             ->generate();
@@ -172,9 +173,10 @@ class ScriptingTest extends TestCase
 
         // Execute it!
         /** @psalm-suppress ForbiddenCode */
-        $this->assertEquals('testtest2', shell_exec($script));
+        $this->assertEquals('test--test2', shell_exec($script));
 
         $this->expectException(RuntimeException::class);
+        /** @noinspection UnusedFunctionResultInspection */
         (new Script())->and()->generate();
 
     }
@@ -204,11 +206,11 @@ class ScriptingTest extends TestCase
         $this->assertEquals('test', shell_exec($script));
 
         $this->expectException(RuntimeException::class);
+        /** @noinspection UnusedFunctionResultInspection */
         (new Script())->or()->generate();
 
     }
 
-    /** @test */
     public function testSleepCommand(): void
     {
 
@@ -237,18 +239,18 @@ class ScriptingTest extends TestCase
         $this->assertEquals($command, $script);
 
         $this->expectException(RuntimeException::class);
+        /** @noinspection UnusedFunctionResultInspection */
         (new Script())
             ->sleep('test')
             ->generate();
 
     }
 
-    /** @test */
     public function testSetAndBackTick(): void
     {
 
         $script = (new Script())
-            ->let('CONFIG', (new Script())->backtick('cat /etc/config'))
+            ->let('CONFIG', Script::backtick('cat /etc/config'))
             ->generate();
 
         $this->assertEquals('CONFIG=`cat /etc/config`', $script);
@@ -260,7 +262,7 @@ class ScriptingTest extends TestCase
         $this->assertEquals($command, $script);
 
         $script = (new Script())
-            ->let('CONFIG', (new Script())->backtick('cat /etc/config'), true)
+            ->let('CONFIG', Script::backtick('cat /etc/config'), true)
             ->generate();
 
         $this->assertEquals('export CONFIG=`cat /etc/config`', $script);
@@ -273,7 +275,6 @@ class ScriptingTest extends TestCase
 
     }
 
-    /** @test */
     public function testShebang(): void
     {
 
@@ -302,6 +303,7 @@ class ScriptingTest extends TestCase
         $this->assertEquals($command, $script);
 
         $this->expectException(RuntimeException::class);
+        /** @noinspection UnusedFunctionResultInspection */
         (new Script())
             ->sleep(10)
             ->shebang()
@@ -309,7 +311,6 @@ class ScriptingTest extends TestCase
 
     }
 
-    /** @test  */
     public function testPipe(): void
     {
 
@@ -342,6 +343,7 @@ class ScriptingTest extends TestCase
         $this->assertEquals('test', shell_exec($command));
 
         $this->expectException(RuntimeException::class);
+        /** @noinspection UnusedFunctionResultInspection */
         (new Script())
             ->pipe()
             ->generate();
@@ -373,6 +375,7 @@ class ScriptingTest extends TestCase
         }
 
         $this->expectException(RuntimeException::class);
+        /** @noinspection UnusedFunctionResultInspection */
         (new Script())
             ->echo('test')
             ->redirect($fd, 'unknown', '/tmp/test')
@@ -380,7 +383,6 @@ class ScriptingTest extends TestCase
 
     }
 
-    /** @test */
     public function testCatCommand(): void
     {
 
@@ -398,7 +400,6 @@ class ScriptingTest extends TestCase
 
     }
 
-    /** @test */
     public function testTacCommand(): void
     {
 
@@ -416,7 +417,6 @@ class ScriptingTest extends TestCase
 
     }
 
-    /** @test */
     public function testTailCommandWith(): void
     {
 
@@ -464,7 +464,6 @@ class ScriptingTest extends TestCase
 
     }
 
-    /** @test */
     public function testTailCommandWithCat(): void
     {
 
@@ -498,7 +497,6 @@ class ScriptingTest extends TestCase
 
     }
 
-    /** @test */
     public function testHeadCommandWith(): void
     {
 
@@ -539,13 +537,13 @@ class ScriptingTest extends TestCase
         $this->assertEquals($command, $script);
 
         $this->expectException(RuntimeException::class);
+        /** @noinspection UnusedFunctionResultInspection */
         (new Script())
             ->head('/head', null, true)
             ->generate();
 
     }
 
-    /** @test */
     public function testHeadCommandWithCat(): void
     {
 
@@ -579,7 +577,6 @@ class ScriptingTest extends TestCase
 
     }
 
-    /** @test */
     public function testCommand(): void
     {
 
@@ -603,7 +600,6 @@ class ScriptingTest extends TestCase
 
     }
 
-    /** @test */
     public function testCommandWithEnv(): void
     {
 
@@ -629,7 +625,6 @@ class ScriptingTest extends TestCase
 
     }
 
-    /** @test */
     public function testEnv(): void
     {
 

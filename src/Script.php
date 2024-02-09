@@ -138,9 +138,8 @@ class Script
                 $double ? ' ]]' : ' ]',
                 '; then',
             ]))
-            ->line($script)
-            ->fi();
-    }
+            ->line($script);
+   }
 
     /**
      * @param callable $callable
@@ -152,8 +151,8 @@ class Script
 
         return $this
             ->line('else')
-            ->line($script)
-            ->fi();
+            ->line($script);
+
     }
 
     /**
@@ -574,7 +573,7 @@ class Script
      */
     public function exit(int $code = 0): self
     {
-        return $this->line(sprintf('exit %d', $code))->semiColon();
+        return $this->line(sprintf('exit %d', $code));
     }
 
     /**
@@ -886,6 +885,9 @@ class Script
      */
     protected function getLastFragment() : string
     {
+        if(empty($this->fragments)) {
+            throw new RuntimeException('Empty Script');
+        }
         return $this->fragments[count($this->fragments) - 1];
     }
 

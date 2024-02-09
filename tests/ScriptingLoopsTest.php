@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 class ScriptingLoopsTest extends TestCase
 {
     /** @test */
-    public function it_can_create_while_loops()
+    public function it_can_create_while_loops(): void
     {
         $condition = Condition::create('$i')->lessThan(10);
 
@@ -25,7 +25,7 @@ class ScriptingLoopsTest extends TestCase
     }
 
     /** @test */
-    public function it_can_control_loop_flow()
+    public function it_can_control_loop_flow(): void
     {
         $condition = Condition::create('$i')->lessThan(10);
 

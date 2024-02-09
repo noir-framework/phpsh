@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 class ScriptingConditionsTest extends TestCase
 {
     /** @test */
-    public function it_can_build_an_if_statement()
+    public function it_can_build_an_if_statement(): void
     {
         $condition = Condition::create();
         $sh = (new Script())
@@ -24,7 +24,7 @@ class ScriptingConditionsTest extends TestCase
     }
 
     /** @test */
-    public function it_can_build_an_if_statement_with_multiple_conditions()
+    public function it_can_build_an_if_statement_with_multiple_conditions(): void
     {
         $sh = (new Script())
             ->let('i', 5)
@@ -37,7 +37,7 @@ class ScriptingConditionsTest extends TestCase
     }
 
     /** @test */
-    public function it_can_build_an_if_else_statement()
+    public function it_can_build_an_if_else_statement(): void
     {
         $sh = (new Script())
             ->let('i', 15)
@@ -45,13 +45,14 @@ class ScriptingConditionsTest extends TestCase
                 $script->printf("NOT_OK");
             })->else(function (Script $script) {
                 $script->printf("OK");
-            })
+            })->fi()
             ->generate();
+
         $this->assertEquals('OK', shell_exec($sh));
     }
 
     /** @test */
-    public function it_can_build_an_if_elseif_else_statement()
+    public function it_can_build_an_if_elseif_else_statement(): void
     {
         $sh = (new Script())
             ->let('i', 25)
@@ -61,13 +62,13 @@ class ScriptingConditionsTest extends TestCase
                 $script->printf('OK');
             })->else(function (Script $script) {
                 $script->printf('NOT_OK');
-            })
+            })->fi()
             ->generate();
         $this->assertEquals('OK', shell_exec($sh));
     }
 
     /** @test */
-    public function it_can_build_switch_statement()
+    public function it_can_build_switch_statement(): void
     {
         $sh = (new Script())
             ->let('i', 1)
