@@ -362,10 +362,10 @@ class ScriptingTest extends TestCase
                     ->redirect($fd, $op, '/tmp/test')
                     ->generate();
 
-                $this->assertEquals("echo -n test $fd$op /tmp/test", $script);
+                $this->assertEquals("echo -n test $fd$op/tmp/test", $script);
 
                 $command = (new Script())
-                    ->command('echo', ['-n', 'test', $fd.$op, '/tmp/test'])
+                    ->command('echo', ['-n', 'test', $fd.$op . '/tmp/test'])
                     ->generate();
 
                 $this->assertEquals($command, $script);

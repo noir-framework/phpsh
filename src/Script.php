@@ -115,7 +115,7 @@ class Script
             throw new RuntimeException(sprintf('Invalid redirection operator: %s', $op));
         }
 
-        return $this->put(sprintf('%s%s %s', $fd, $op, $dst));
+        return $this->put(sprintf('%s%s%s', $fd, $op, $dst));
     }
 
     /**
